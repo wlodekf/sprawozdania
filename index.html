@@ -121,10 +121,7 @@ const handleFileSelect1= (evt) => {
 }
 
 const handleFileSelect2= (evt) => {
-	const form= document.getElementById("form");
-	if (navigator.userAgent.indexOf("Firefox")>=0)
-		form.removeAttribute("target");
-	form.submit();
+	document.getElementById("form").submit();
 }
 
 </script>
@@ -138,7 +135,7 @@ const handleFileSelect2= (evt) => {
 	<ol>
 	<li>Przetwarzanie całkowicie lokalne (JS) w przeglądarce: <input type="file" id="file1" name="file1"/></li>
 	<li>Dodanie nagłówka arkusza styli XSL do pliku XML (na serwerze): 
-		<form id="form" action="/xml" method="POST" enctype="multipart/form-data" target="_blank">
+		<form id="form" action="/xml" method="POST" enctype="multipart/form-data">
 			<input type="file" id="file2" name="file2"/>
 		</form>
 	</li>
