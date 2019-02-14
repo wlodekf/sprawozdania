@@ -103,7 +103,7 @@ const loadXML = async (url) => {
 	xsltProcessor.setParameter('', 'root', '');
 })();
 
-handleFileSelect1= (evt) => {
+const handleFileSelect1= (evt) => {
 
 	var reader= new FileReader(),
        	parser = new DOMParser(),
@@ -120,8 +120,11 @@ handleFileSelect1= (evt) => {
     reader.readAsText(file1[0]);
 }
 
-handleFileSelect2= (evt) => {
-	document.getElementById("form").submit();
+const handleFileSelect2= (evt) => {
+	const form= document.getElementById("form");
+	if (navigator.userAgent.indexOf("Firefox")>=0)
+		form.removeAttribute("target");
+	form.submit();
 }
 
 </script>
