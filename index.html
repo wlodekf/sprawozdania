@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	     
+    <title>Wizualizacja pliku XML sprawozdania finansowego</title>
+    
+    <style>
+    div.obraz {
+    	margin-top: 20px;
+ 		background-image: url("sprawozdanie.png");
+ 		background-size: cover;
+ 		background-repeat: no-repeat;
+ 		width: 1040px;
+ 		height: 540px;
+ 		opacity: 0.4;
+ 		border-top: 1px dotted black;
+ 	}
+ 	div.pg {
+ 		font-family: "Arial",sans-serif;
+ 		font-size: 14px;
+ 		overflow-x: hidden;
+ 	}
+ 	div.info {
+ 		position: absolute;
+ 		bottom: 20px;
+		font-size: small;
+ 	}
+	h1.pg {
+		margin-top: 10px;
+		color: #20b2aa;
+	}
+	form {
+		display: inline;
+	}
+    </style>
+    
+	<script>
+
+const xsltProcessor = new XSLTProcessor();
+
+const kopiaElementow = (xsl, zmienna, xml, tag, elementy) => {
+	// Ustalenie elementu ze zmienną, do której zostanie przeniesiony odpowiedni słownik
+	let varNode;
+	for (let el of xsl.getElementsByTagName("xsl:variable")) {
+		if (el.getAttribute('name') == zmienna)
+			varNode= el;
+	}
+
+	// Przeniesienie wskazanych elementów z pliku schematu do arkusza transformacji	
+  	let elements= xml.children[0].children;
+  	for(let el of elements) {
+  		if (!elementy || elementy.includes(el.getAttribute('name'))) {
+  			const rootNode= xsl.importNode(el, true);
+  			varNode.appendChild(rootNode);
+  		}
+  	}
+}
+
+const loadXML = async (url) => {
+    return new Promise(function (resolve, reject) {
+        let xhr = new XMLHttpRequest();
+        xhr.open("GET", url, true);
+        xhr.onload = function () {
+            if (this.status >= 200 && this.status < 300) {
+                resolve(xhr.responseXML);
+            } else {
+                reject({
+                    status: this.status,
+                    statusText: xhr.statusText
+                });
+            }
+        };
+        xhr.onerror = function () {
+            reject({
+                status: this.status,
+                statusText: xhr.statusText
+            });
+        };
+        xhr.send();
+    });
+}
+
+(async () => {
+	const xsl= await loadXML("sf.xsl");
+	
+	// Obejście braku obsługi funkcji document() w chrome
+	
+	const nazwy= await loadXML('JednostkaInnaStrukturyDanychSprFin_v1-0.xsd');
+	kopiaElementow(xsl, "nazwy", nazwy, "xsd:complexType", ['BilansJednostkaInna', 'RZiSJednostkaInna', 'ZestZmianWKapitaleJednostkaInna', 'RachPrzeplywowJednostkaInna']);
+
+	const podatek= await loadXML('StrukturyDanychSprFin_v1-1.xsd');
+	kopiaElementow(xsl, "podatek", podatek, "xsd:complexType", ['TInformacjaDodatkowaDotyczacaPodatkuDochodowego']);
+
+	const pkd= await loadXML('KodyPKD_v2-0E.xsd');
+	kopiaElementow(xsl, "pkd", pkd, "xs:simpleType", null);
+
+	xsltProcessor.importStylesheet(xsl);
+	xsltProcessor.setParameter('', 'procesor', 'klient');
+	xsltProcessor.setParameter('', 'root', '');
+})();
+
+handleFileSelect1= (evt) => {
+
+	var reader= new FileReader(),
+       	parser = new DOMParser(),
+		file1= evt.target.files;
+    
+    reader.onload= (e) => {
+    	let xml= parser.parseFromString(e.target.result, "text/xml");
+		resultDocument = xsltProcessor.transformToFragment(xml, document);
+
+		document.getElementById("loader").style.display= "none";
+		document.body.appendChild(resultDocument);
+    };
+
+    reader.readAsText(file1[0]);
+}
+
+handleFileSelect2= (evt) => {
+	document.getElementById("form").submit();
+}
+
+</script>
+
+<head>
+
+<body>
+<div id="loader" class="pg">
+	<h1 class="pg">Wizualizacja pliku XML sprawozdania finansowego</h1>
+	<p>Wybierz (niepodpisany cyfrowo) plik XML ze sprawozdaniem finansowym (typu Jednostka Inna)</p>
+	<ol>
+	<li>Przetwarzanie całkowicie lokalne (JS) w przeglądarce: <input type="file" id="file1" name="file1"/></li>
+	<li>Dodanie nagłówka arkusza styli XSL do pliku XML (na serwerze): 
+		<form id="form" action="/xml" method="POST" enctype="multipart/form-data" target="_blank">
+			<input type="file" id="file2" name="file2"/>
+		</form>
+	</li>
+	</ol>
+	<div class="pg obraz"></div>
+	<div class="pg info">
+		Źródło: <a class="pg" href="https://github.com/wlodekf/sprawozdania">https://github.com/wlodekf/sprawozdania</a>
+	</div>
+</div>
+</body>
+
+<script>
+   document.getElementById('file1').addEventListener('change', handleFileSelect1, false);
+   document.getElementById('file2').addEventListener('change', handleFileSelect2, false);
+</script>
+
+</html>
+
