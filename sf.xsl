@@ -36,7 +36,32 @@
 		</xsl:choose>	
 	</xsl:if>
 </xsl:template>
-			
+
+<xsl:template name="znak_kwoty">
+	<xsl:param name="kwota"/>
+	<xsl:choose>
+		<xsl:when test="$kwota &lt; 0">
+			<xsl:value-of select="'ujemna'"/>
+		</xsl:when>
+		<xsl:otherwise>
+			<xsl:value-of select="'dodatnia'"/>
+		</xsl:otherwise>
+	</xsl:choose>
+</xsl:template>
+
+<xsl:template name="element">
+	<!-- Ustalenie nazwy elementu - obsługa szczególnego przypadku gdy elementem jest pozycja użytkownika
+	     wtedy nazwa elementu brana jest z komenatrza -->
+    <xsl:choose>
+		<xsl:when test="substring-before(substring-after(name(.), ':'), '_') = 'PozycjaUszczegolawiajaca'">
+			<xsl:value-of select="comment()"/>
+		</xsl:when>
+		<xsl:otherwise>
+			<xsl:value-of select="substring-after(name(.), ':')"/>
+		</xsl:otherwise>
+    </xsl:choose>
+</xsl:template>
+
 <xsl:template name="nazwa-pozycji">
 	<xsl:param name="raport"/>
 	<xsl:variable name="wyliczenie" select="substring-after(name(.), ':')"/>
@@ -140,7 +165,9 @@
 
 <xsl:template name="klu-pozycji">
 	<xsl:param name="raport"/>
-	<xsl:variable name="wyliczenie" select="substring-after(name(.), ':')"/>
+	<xsl:variable name="wyliczenie">
+		<xsl:call-template name="element"/>
+	</xsl:variable>
 	
 	<xsl:variable name="klu1">
 		<xsl:call-template name="ile-wystapien">
@@ -181,7 +208,10 @@
 	<!-- Ustalenie klasy CSS wyróżnienia wiersza raportu -->
 	
 	<xsl:param name="raport"/>
-	<xsl:variable name="wyliczenie" select="substring-after(name(.), ':')"/>
+	<xsl:variable name="wyliczenie">
+		<xsl:call-template name="element"/>
+	</xsl:variable>
+
 	<xsl:variable name="poziom">
 		<xsl:call-template name="ile-wystapien">
 			<xsl:with-param name="tekst" select="$wyliczenie"/>
@@ -233,7 +263,7 @@
         	<xsl:variable name="x" select="translate($str, $upper, $lower)"/>
         	<xsl:variable name="f" select="substring($nazwa, 1, 1)"/>
         	<xsl:choose>
-        		<xsl:when test="$f = '–'">
+				<xsl:when test="$f = '–' or $f = '-'">
         		</xsl:when>
         		<xsl:when test="$poziom &gt;= 3 and $x != $str">
         			<xsl:value-of select="$x"/>)
@@ -383,7 +413,11 @@
 			overflow: hidden;
 			padding: 0 20px 0 30px;
 		}
-		
+
+		section.hdr {
+			margin-top: 50px;
+		}
+
 		section.bil {
 			padding: 0;
 		}
@@ -487,6 +521,14 @@
 			font-family: Arial;
 			padding: 2px;
 		}
+
+		th:last-child, td:last-child {
+			border-right: 1px solid #d0d0d0;
+		}
+
+		tr:last-child th, tr:last-child td {
+			border-bottom: 1px solid #d0d0d0;
+		}
 		
 		table.raport th, table.raport td {
 			font-size: 11px;
@@ -546,7 +588,7 @@
 		
 		table.raport.podatek td {
 			font-size: 11px;
-			padding: 5px 2px;
+			padding: 2px 4px 3px 5px;
 		}
 		
 		table.ident th, table.ident td {
@@ -604,6 +646,9 @@
   			white-space: nowrap;
   			text-align: center;
   		}
+		td.pp {
+			white-space: nowrap;
+		}
   		tr.rh {
   			background-color: #e8e8ff;
   		}
@@ -623,7 +668,9 @@
 			min-width: 90px;
 			max-width: 115px;
 		}
-
+		table.raport.podatek td.kwotyp {
+			min-width: 85px;
+		}
 		table.raport td.tekst.klu0 {
 		    padding-left: 5px;
 		}		
@@ -1116,14 +1163,7 @@
 		<td class="wsnw">
 			<xsl:call-template name="after-last">
                 <xsl:with-param name="str">
-                	<xsl:choose>
-                		<xsl:when test="substring-before(substring-after(name(.), ':'), '_') = 'PozycjaUszczegolawiajaca'">
-                			<xsl:value-of select="comment()"/>
-                		</xsl:when>
-                		<xsl:otherwise>
-                	 		<xsl:value-of select="substring-after(name(.), ':')"/>
-                		</xsl:otherwise>
-                	</xsl:choose> 
+					<xsl:call-template name="element"/>
                	</xsl:with-param>
                 <xsl:with-param name="find" select="'_'"/>
                 <xsl:with-param name="poziom" select="0"/>
@@ -1305,7 +1345,7 @@
 		
 		<div class="sek">
 			<div class="tyt2">Załączniki do sprawozdania</div>
-			<table>
+			<table cellspacing="0" cellpadding="0">
 			<thead>
 				<tr class="rh"><th>Opis</th><th>Nazwa pliku</th></tr>
 			</thead>
@@ -1315,8 +1355,20 @@
 				<xsl:variable name="zawartosc" select="dtsf:Plik/dtsf:Zawartosc"/>
 				<xsl:variable name="nazwa" select="dtsf:Plik/dtsf:Nazwa"/>
 				<tr>
-					<td><xsl:value-of select="dtsf:Opis"/></td>
-					<td><a class="lnk" href="{'data:application/octet-stream;base64,'}{$zawartosc}" download="{$nazwa}"><xsl:value-of select="dtsf:Plik/dtsf:Nazwa"/></a></td>
+					<td>
+						<xsl:call-template name="print-paras">
+							<xsl:with-param name="text" select="dtsf:Opis"/>
+						</xsl:call-template>
+					</td>
+					<td><a class="lnk" href="{'data:application/octet-stream;base64,'}{$zawartosc}" download="{$nazwa}">
+							<xsl:call-template name="replace-str">
+								<xsl:with-param name="str" select="dtsf:Plik/dtsf:Nazwa" />
+								<xsl:with-param name="find" select="'_'" />
+								<xsl:with-param name="replace" select="' '" />
+							</xsl:call-template>
+							<!-- xsl:value-of select="dtsf:Plik/dtsf:Nazwa"/-->
+						</a>
+					</td>
 				</tr>
 			</xsl:for-each>
 			</tbody>
@@ -1329,6 +1381,9 @@
 	<xsl:variable name="kapitalowe" select=".//dtsf:KwotaB"/>
 	<xsl:variable name="podstawa" select=".//dtsf:PodstawaPrawna"/>
 	<xsl:variable name="poprzedni" select=".//dtsf:RP"/>
+	<xsl:variable name="wyr">
+		<xsl:if test="//dtsf:PozycjaUzytkownika">wyrUBS</xsl:if>
+	</xsl:variable>
 	
 	<div class="sek">
 		<div class="tyt2">Rozliczenie różnicy pomiędzy podstawą opodatkowania podatkiem dochodowym a wynikiem finansowym (zyskiem, stratą) brutto</div>
@@ -1354,7 +1409,8 @@
 			<xsl:apply-templates>
 				<xsl:with-param name="kapitalowe" select="$kapitalowe"/>
 				<xsl:with-param name="podstawa" select="$podstawa"/>
-				<xsl:with-param name="poprzedni" select="$poprzedni"/>				
+				<xsl:with-param name="poprzedni" select="$poprzedni"/>
+				<xsl:with-param name="wyroznienie" select="$wyr"/>
 			</xsl:apply-templates>
 		</tbody>
 		</table>
@@ -1366,7 +1422,9 @@
 	<xsl:param name="kapitalowe"/>
 	<xsl:param name="podstawa"/>
 	<xsl:param name="poprzedni"/>
-	<tr>
+	<xsl:param name="wyroznienie"/>
+
+	<tr class="{$wyroznienie}">
 		<td class="tekst">
 			<xsl:call-template name="nazwa-podatek">
 				<xsl:with-param name="raport" select="'Podatek'"/>
@@ -1441,7 +1499,13 @@
 		
 		<xsl:apply-templates select="dtsf:PozycjaUzytkownika">
 			<xsl:with-param name="kapitalowe" select="$kapitalowe"/>
-			<xsl:with-param name="podstawa" select="$podstawa"/>			
+			<xsl:with-param name="podstawa" select="$podstawa"/>
+			<xsl:with-param name="poprzedni" select="$poprzedni"/>
+		</xsl:apply-templates>
+
+		<xsl:apply-templates select="dtsf:Pozostale">
+			<xsl:with-param name="kapitalowe" select="$kapitalowe"/>
+			<xsl:with-param name="podstawa" select="$podstawa"/>
 			<xsl:with-param name="poprzedni" select="$poprzedni"/>
 		</xsl:apply-templates>
 	</tr>
@@ -1451,13 +1515,20 @@
 	<xsl:param name="kapitalowe"/>
 	<xsl:param name="podstawa"/>
 	<xsl:param name="poprzedni"/>
+	<xsl:variable name="kwotaa" select="dtsf:Kwoty/dtsf:RB/dtsf:Kwota/dtsf:KwotaA"/>
+    <xsl:variable name="ujemnaa">
+    	<xsl:call-template name="znak_kwoty">
+    		<xsl:with-param name="kwota" select="$kwotaa"/>
+    	</xsl:call-template>
+    </xsl:variable>
+
 	<tr>
 		<td class="tekst klu20">
 			<xsl:value-of select="dtsf:NazwaPozycji"/>
 		</td>
-		<td class="kwotyp ar">
+		<td class="kwotyp ar {$ujemnaa}">
 			<xsl:call-template name="tkwotowy">
-				<xsl:with-param name="kwota" select="dtsf:Kwoty/dtsf:RB/dtsf:Kwota/dtsf:KwotaA"/>
+				<xsl:with-param name="kwota" select="$kwotaa"/>
 			</xsl:call-template>
 		</td>
 		
@@ -1475,7 +1546,7 @@
 		</xsl:if>
 		
 		<xsl:if test="$podstawa">
-			<td>
+			<td class="pp">
 				<xsl:apply-templates select=".//dtsf:PodstawaPrawna/*"/>
 			</td>
 		</xsl:if>
@@ -1484,6 +1555,50 @@
 		<td class="kwotyp ar">
 			<xsl:call-template name="tkwotowy">
 				<xsl:with-param name="kwota" select="dtsf:Kwoty/dtsf:RP/dtsf:KwotaA"/>
+			</xsl:call-template>
+		</td>
+		</xsl:if>
+	</tr>
+</xsl:template>
+
+<xsl:template match="dtsf:Pozostale">
+	<xsl:param name="kapitalowe"/>
+	<xsl:param name="podstawa"/>
+	<xsl:param name="poprzedni"/>
+
+	<tr>
+		<td class="tekst klu20">
+			pozostałe
+		</td>
+
+		<td class="kwotyp ar">
+			<xsl:call-template name="tkwotowy">
+				<xsl:with-param name="kwota" select="dtsf:RB/dtsf:KwotaA"/>
+			</xsl:call-template>
+		</td>
+
+		<xsl:if test="$kapitalowe">
+		<td class="kwotyp ar">
+			<xsl:call-template name="tkwotowy">
+				<xsl:with-param name="kwota" select="dtsf:RB/dtsf:KwotaB"/>
+			</xsl:call-template>
+		</td>
+		<td class="kwotyp ar">
+			<xsl:call-template name="tkwotowy">
+				<xsl:with-param name="kwota" select="dtsf:RB/dtsf:KwotaC"/>
+			</xsl:call-template>
+		</td>
+		</xsl:if>
+
+		<xsl:if test="$podstawa">
+			<td class="pp">
+			</td>
+		</xsl:if>
+
+		<xsl:if test="$poprzedni">
+		<td class="kwotyp ar">
+			<xsl:call-template name="tkwotowy">
+				<xsl:with-param name="kwota" select="dtsf:RP/dtsf:KwotaA"/>
 			</xsl:call-template>
 		</td>
 		</xsl:if>

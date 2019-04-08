@@ -110,7 +110,13 @@ const handleFileSelect1= (evt) => {
 		file1= evt.target.files;
     
     reader.onload= (e) => {
-    	let xml= parser.parseFromString(e.target.result, "text/xml");
+		let xml= e.target.result;
+		// Wydzielenie sprawozdania z podpisanego pliku
+		m= new RegExp('<(\\w+:)?JednostkaInna.*</(\\1)?JednostkaInna[^>]*>', 'sm').exec(xml)
+		if (m)
+			xml= '<?xml version="1.0" encoding="UTF-8"?>\n'+m[0];
+
+		xml= parser.parseFromString(xml, "text/xml");
 		resultDocument = xsltProcessor.transformToFragment(xml, document);
 
 		document.getElementById("loader").style.display= "none";
