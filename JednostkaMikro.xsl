@@ -15,13 +15,10 @@
 >
 
 <xsl:include href="common.xsl"/>
-
 <xsl:include href="func.xsl"/>
-
 <xsl:include href="jin.xsl"/>
 <xsl:include href="jma.xsl"/>
 <xsl:include href="jmi.xsl"/>
-
 <xsl:include href="iddpd.xsl"/>
 
 <xsl:template match="/">

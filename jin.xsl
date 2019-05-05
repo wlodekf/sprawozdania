@@ -25,6 +25,23 @@
 	</section>	
 </xsl:template>
 
+<xsl:template match="tns:WprowadzenieDoSprawozdaniaFinansowego">
+	<section>
+		<div class="tyt">Wprowadzenie do sprawozdania</div>
+		<xsl:apply-templates select="tns:P_1"/>
+		<xsl:apply-templates select="tns:P_3"/>
+		<xsl:apply-templates select="tns:P_4"/>
+		<xsl:apply-templates select="tns:P_5"/>
+		<xsl:apply-templates select="tns:P_7"/>
+		
+		<div class="wpr">
+			<h1>8. Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</h1>
+		
+			<xsl:apply-templates select="tns:P_8"/>
+		</div>
+	</section>	
+</xsl:template>
+
 <xsl:template match="jin:Aktywa">
 	<table cellspacing="0" cellpadding="0" class="raport bilans aktywa">
 		<thead>
@@ -308,8 +325,38 @@
 	</section>
 </xsl:template>
 
+<xsl:template match="tns:ZestZmianWKapitale">
+	<section class="pbb">
+		<div class="tyt">
+			Zestawienie zmian w kapitale (funduszu) własnym
+		</div>
+		
+	<table cellspacing="0" cellpadding="0" class="kapital raport">
+		<thead>
+			<tr class="rh">
+				<th class="al">Lp</th>
+				<th>Treść / wyszczególnienie</th>
+				<th class="ar">Bieżący okres</th>
+				<th class="ar end">Poprzedni okres</th>
+			</tr>
+		</thead>
+		<tbody>
+			<xsl:apply-templates select="jin:*">
+				<xsl:with-param name="raport" select="'ZestZmianWKapitaleJednostkaInna'"/>			
+			</xsl:apply-templates>	
+		</tbody>
+	</table>
+	</section>
+</xsl:template>
 
 <xsl:template match="tns:RachPrzeplywowJednostkaInna">
+	<section class="pbb">
+		<xsl:apply-templates select="jin:PrzeplywyPosr"/>
+		<xsl:apply-templates select="jin:PrzeplywyBezp"/>
+	</section>	
+</xsl:template>
+
+<xsl:template match="tns:RachPrzeplywow">
 	<section class="pbb">
 		<xsl:apply-templates select="jin:PrzeplywyPosr"/>
 		<xsl:apply-templates select="jin:PrzeplywyBezp"/>
@@ -401,5 +448,180 @@
 		</div>			
 	</section>	
 </xsl:template>
+
+<xsl:template match="tns:DodatkoweInformacjeIObjasnieniaJednstkaInna">
+	<section class="pbb">
+		<div class="tyt">Dodatkowe informacje i objaśnienia</div>
+		
+		<xsl:apply-templates select="tns:InformacjaDodatkowaDotyczacaPodatkuDochodowego"/>
+		
+		<div class="sek">
+			<div class="tyt2">Załączniki do sprawozdania</div>
+			<table cellspacing="0" cellpadding="0">
+			<thead>
+				<tr class="rh"><th>Opis</th><th>Nazwa pliku</th></tr>
+			</thead>
+			<tbody>
+			<xsl:for-each select="tns:DodatkoweInformacjeIObjasnienia">
+				<xsl:variable name="plik_id" select="dtsf:Plik/comment()"/>
+				<xsl:variable name="zawartosc" select="dtsf:Plik/dtsf:Zawartosc"/>
+				<xsl:variable name="nazwa" select="dtsf:Plik/dtsf:Nazwa"/>
+				<tr>
+					<td>
+						<xsl:call-template name="print-paras">
+							<xsl:with-param name="text" select="dtsf:Opis"/>
+						</xsl:call-template>
+					</td>
+					<td><a class="lnk" href="{'data:application/octet-stream;base64,'}{$zawartosc}" download="{$nazwa}">
+							<xsl:call-template name="replace-str">
+								<xsl:with-param name="str" select="dtsf:Plik/dtsf:Nazwa" />
+								<xsl:with-param name="find" select="'_'" />
+								<xsl:with-param name="replace" select="' '" />
+							</xsl:call-template>
+							<!-- xsl:value-of select="dtsf:Plik/dtsf:Nazwa"/-->
+						</a>
+					</td>
+				</tr>
+			</xsl:for-each>
+			</tbody>
+			</table>
+		</div>			
+	</section>	
+</xsl:template>
+
+<xsl:template match="tns:InformacjaDodatkowaDotyczacaPodatkuDochodowego">
+	<xsl:variable name="kapitalowe" select=".//dtsf:KwotaB"/>
+	<xsl:variable name="podstawa" select=".//dtsf:PodstawaPrawna"/>
+	<xsl:variable name="poprzedni" select=".//dtsf:RP"/>
+	<xsl:variable name="wyr">
+		<xsl:if test="//dtsf:PozycjaUzytkownika">wyrUBS</xsl:if>
+	</xsl:variable>
+	
+	<div class="sek">
+		<div class="tyt2">Rozliczenie różnicy pomiędzy podstawą opodatkowania podatkiem dochodowym a wynikiem finansowym (zyskiem, stratą) brutto</div>
+	
+		<table cellspacing="0" cellpadding="0" class="raport podatek">
+		<thead>
+			<tr class="rh">
+				<th>Pozycja / wyszczególnienie</th>
+				<th class="ar">Rok bieżący<br/>Łącznie</th>
+				<xsl:if test="$kapitalowe">
+					<th class="ar">Rok bieżący<br/>z zysków kapitałowych</th>
+					<th class="ar">Rok bieżący<br/>z innych źródeł</th>
+				</xsl:if>
+				<xsl:if test="$podstawa">
+					<th>Podstawa prawna</th>
+				</xsl:if>
+				<xsl:if test="$poprzedni">
+					<th class="ar">Rok poprzedni<br/>Łącznie</th>
+				</xsl:if>
+			</tr>
+		</thead>
+		<tbody>
+			<xsl:apply-templates>
+				<xsl:with-param name="kapitalowe" select="$kapitalowe"/>
+				<xsl:with-param name="podstawa" select="$podstawa"/>
+				<xsl:with-param name="poprzedni" select="$poprzedni"/>
+				<xsl:with-param name="wyroznienie" select="$wyr"/>
+			</xsl:apply-templates>
+		</tbody>
+		</table>
+	</div>
+			
+</xsl:template>
+		
+<xsl:template match="tns:InformacjaDodatkowaDotyczacaPodatkuDochodowego/*">
+	<xsl:param name="kapitalowe"/>
+	<xsl:param name="podstawa"/>
+	<xsl:param name="poprzedni"/>
+	<xsl:param name="wyroznienie"/>
+
+	<tr class="{$wyroznienie}">
+		<td class="tekst">
+			<xsl:call-template name="nazwa-podatek">
+				<xsl:with-param name="raport" select="'Podatek'"/>
+			</xsl:call-template>
+		</td>
+		
+		<xsl:choose>
+			<xsl:when test="dtsf:Kwota/dtsf:RB/dtsf:KwotaA">
+				<td class="kwotyp ar">
+					<xsl:call-template name="tkwotowy">
+						<xsl:with-param name="kwota" select="dtsf:Kwota/dtsf:RB/dtsf:KwotaA"/>
+					</xsl:call-template>
+				</td>
+				<xsl:if test="$kapitalowe">
+				<td class="kwotyp ar">
+					<xsl:call-template name="tkwotowy">
+						<xsl:with-param name="kwota" select="dtsf:Kwota/dtsf:RB/dtsf:KwotaB"/>
+					</xsl:call-template>
+				</td>
+				<td class="kwotyp ar">
+					<xsl:call-template name="tkwotowy">
+						<xsl:with-param name="kwota" select="dtsf:Kwota/dtsf:RB/dtsf:KwotaC"/>
+					</xsl:call-template>
+				</td>
+				</xsl:if>
+				
+				<xsl:if test="$podstawa">
+					<td></td>
+				</xsl:if>
+								
+				<xsl:if test="$poprzedni">
+				<td class="kwotyp ar">
+					<xsl:call-template name="tkwotowy">
+						<xsl:with-param name="kwota" select="dtsf:Kwota/dtsf:RP/dtsf:KwotaA"/>
+					</xsl:call-template>
+				</td>
+				</xsl:if>
+			</xsl:when>
+			
+			<xsl:otherwise>
+				<td class="kwotyp ar">
+					<xsl:call-template name="tkwotowy">
+						<xsl:with-param name="kwota" select="./dtsf:RB"/>
+					</xsl:call-template>
+				</td>
+	
+				<xsl:if test="$kapitalowe">
+				<td class="kwotyp ar">
+					<xsl:call-template name="tkwotowy">
+						<xsl:with-param name="kwota" select="./dtsf:RB/dtsf:KwotaB"/>
+					</xsl:call-template>
+				</td>
+				<td class="kwotyp ar">
+					<xsl:call-template name="tkwotowy">
+						<xsl:with-param name="kwota" select="./dtsf:RB/dtsf:KwotaC"/>
+					</xsl:call-template>
+				</td>
+				</xsl:if>
+				
+				<xsl:if test="$podstawa">
+					<td> </td>
+				</xsl:if>
+				<xsl:if test="$poprzedni">
+				<td class="kwotyp ar">
+					<xsl:call-template name="tkwotowy">
+						<xsl:with-param name="kwota" select="dtsf:RP"/>
+					</xsl:call-template>
+				</td>
+				</xsl:if>
+			</xsl:otherwise>
+		</xsl:choose>
+		
+		<xsl:apply-templates select="dtsf:PozycjaUzytkownika">
+			<xsl:with-param name="kapitalowe" select="$kapitalowe"/>
+			<xsl:with-param name="podstawa" select="$podstawa"/>
+			<xsl:with-param name="poprzedni" select="$poprzedni"/>
+		</xsl:apply-templates>
+
+		<xsl:apply-templates select="dtsf:Pozostale">
+			<xsl:with-param name="kapitalowe" select="$kapitalowe"/>
+			<xsl:with-param name="podstawa" select="$podstawa"/>
+			<xsl:with-param name="poprzedni" select="$poprzedni"/>
+		</xsl:apply-templates>
+	</tr>
+</xsl:template>
+
 
 </xsl:stylesheet>
