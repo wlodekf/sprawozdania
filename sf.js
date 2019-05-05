@@ -1,45 +1,3 @@
-<!DOCTYPE html>
-<html lang="pl">
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-	     
-    <title>Wizualizacja pliku XML sprawozdania finansowego</title>
-    
-    <style>
-    div.obraz {
-    	margin-top: 20px;
- 		background-image: url("sprawozdanie.png");
- 		background-size: cover;
- 		background-repeat: no-repeat;
- 		width: 1040px;
- 		height: 540px;
- 		opacity: 0.4;
- 		border-top: 1px dotted black;
- 	}
- 	div.pg {
- 		font-family: "Arial",sans-serif;
- 		font-size: 14px;
- 		overflow-x: hidden;
- 	}
- 	div.info {
- 		position: absolute;
- 		bottom: 20px;
-		font-size: small;
- 	}
-	h1.pg {
-		margin-top: 10px;
-		color: #20b2aa;
-	}
-	form {
-		display: inline;
-	}
-    </style>
-    
-	<script>
-
 const xsltProcessor = new XSLTProcessor();
 
 const kopiaElementow = (xsl, zmienna, xml, tag, elementy) => {
@@ -58,6 +16,20 @@ const kopiaElementow = (xsl, zmienna, xml, tag, elementy) => {
   			varNode.appendChild(rootNode);
   		}
   	}
+}
+
+function saveXml(xml) {
+	var formData= new FormData();
+	formData.append('file2', xml);
+	var xhr = new XMLHttpRequest();
+	xhr.open('POST', '/xml', true);
+	xhr.onload = () => {
+       console.log(xhr.statusText, xhr.responseXML);
+    };
+    xhr.onerror = () => {
+       console.error(xhr.statusText);
+    };
+	xhr.send(formData);
 }
 
 const loadXML = async (url) => {
@@ -84,20 +56,6 @@ const loadXML = async (url) => {
     });
 }
 
-function saveXml(xml) {
-	var formData= new FormData();
-	formData.append('file2', xml);
-	var xhr = new XMLHttpRequest();
-	xhr.open('POST', '/xml', true);
-	xhr.onload = () => {
-       console.log(xhr.statusText, xhr.responseXML);
-    };
-    xhr.onerror = () => {
-       console.error(xhr.statusText);
-    };
-	xhr.send(formData);
-}
-
 (async () => {
 	const xsl= await loadXML("JednostkaInna.xsl");
 	
@@ -117,7 +75,7 @@ function saveXml(xml) {
 	xsltProcessor.setParameter('', 'root', '');
 })();
 
-const handleFileSelect1= (evt) => {
+const handleFileSelect3= (evt) => {
 
 	var reader= new FileReader(),
        	parser = new DOMParser(),
@@ -125,7 +83,7 @@ const handleFileSelect1= (evt) => {
     
     reader.onload= (e) => {
 		let xml= e.target.result;
-		saveXml(xml);
+		saveXml(xml);		
 		// Wydzielenie sprawozdania z podpisanego pliku
 		m= new RegExp('<(\\w+:)?JednostkaInna.*</(\\1)?JednostkaInna[^>]*>', 'sm').exec(xml)
 		if (m)
@@ -141,31 +99,10 @@ const handleFileSelect1= (evt) => {
     reader.readAsText(file1[0]);
 }
 
-const handleFileSelect2= (evt) => {
+const handleFileSelect1= (evt) => {
 	document.getElementById("form").submit();
 }
 
-</script>
-
-<head>
-
-<body>
-<div id="loader" class="pg">
-	<h1 class="pg">Wizualizacja pliku XML sprawozdania finansowego</h1>
-	<p>Wybierz plik XML ze sprawozdaniem finansowym (typu <b>Jednostka Inna|Mała|Mikro</b>)</p>
-	<form id="form" action="/xml" method="POST" enctype="multipart/form-data">
-		<input type="file" id="file2" name="file2"/>
-	</form>
-	<div class="pg obraz"></div>
-	<div class="pg info">
-		Źródło: <a class="pg" href="https://github.com/wlodekf/sprawozdania">https://github.com/wlodekf/sprawozdania</a>
-	</div>
-</div>
-</body>
-
-<script>
-   document.getElementById('file2').addEventListener('change', handleFileSelect2, false);
-</script>
-
-</html>
-
+const handleFileSelect2= (evt) => {
+	document.getElementById("form").submit();
+}

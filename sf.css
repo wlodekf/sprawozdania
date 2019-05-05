@@ -1,0 +1,31 @@
+div.obraz {
+	margin-top: 20px;
+	background-image: url("/sprawozdanie.png");
+	background-size: cover;
+	background-repeat: no-repeat;
+	width: 1040px;
+	height: 540px;
+	opacity: 0.4;
+	border-top: 1px dotted black;
+}
+
+div.pg {
+	font-family: "Arial",sans-serif;
+	font-size: 14px;
+	overflow-x: hidden;
+}
+
+div.info {
+	position: absolute;
+	bottom: 20px;
+	font-size: small;
+}
+
+h1.pg {
+	margin-top: 10px;
+	color: #20b2aa;
+}
+
+form {
+	display: inline;
+}

@@ -1,0 +1,916 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:dtsf="http://www.mf.gov.pl/schematy/SF/DefinicjeTypySprawozdaniaFinansowe/2018/07/09/DefinicjeTypySprawozdaniaFinansowe/" xmlns:jmi="http://www.mf.gov.pl/schematy/SF/DefinicjeTypySprawozdaniaFinansowe/2018/07/09/JednostkaMikroStruktury" targetNamespace="http://www.mf.gov.pl/schematy/SF/DefinicjeTypySprawozdaniaFinansowe/2018/07/09/JednostkaMikroStruktury" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0" xml:lang="pl">
+	<xsd:import namespace="http://www.mf.gov.pl/schematy/SF/DefinicjeTypySprawozdaniaFinansowe/2018/07/09/DefinicjeTypySprawozdaniaFinansowe/" schemaLocation="https://www.mf.gov.pl/documents/764034/6464789/StrukturyDanychSprFin_v1-0.xsd"/>
+	<xsd:complexType name="TNaglowekSprawozdaniaFinansowegoJednostkaMikroWZlotych">
+		<xsd:annotation>
+			<xsd:documentation>Nagłówek sprawozdania finansowego dla jednostki mikro  w złotych</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="dtsf:TNaglowekSprawozdaniaFinansowego">
+				<xsd:sequence>
+					<xsd:element name="KodSprawozdania" fixed="SprFinJednostkaMikroWZlotych">
+						<xsd:complexType>
+							<xsd:simpleContent>
+								<xsd:extension base="xsd:string">
+									<xsd:attribute name="kodSystemowy" type="xsd:string" use="required" fixed="SFJMIZ (1)"/>
+									<xsd:attribute name="wersjaSchemy" type="xsd:string" use="required" fixed="1-0E"/>
+								</xsd:extension>
+							</xsd:simpleContent>
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="WariantSprawozdania">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:enumeration value="1"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="TNaglowekSprawozdaniaFinansowegoJednostkaMikroWTysiacach">
+		<xsd:annotation>
+			<xsd:documentation>Nagłówek sprawozdania finansowego dla jednostki mikro w tysiącach złotych</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="dtsf:TNaglowekSprawozdaniaFinansowego">
+				<xsd:sequence>
+					<xsd:element name="KodSprawozdania" fixed="SprFinJednostkaMikroWTysiacach">
+						<xsd:complexType>
+							<xsd:simpleContent>
+								<xsd:extension base="xsd:string">
+									<xsd:attribute name="kodSystemowy" type="xsd:string" use="required" fixed="SFJMIT (1)"/>
+									<xsd:attribute name="wersjaSchemy" type="xsd:string" use="required" fixed="1-0E"/>
+								</xsd:extension>
+							</xsd:simpleContent>
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="WariantSprawozdania">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:enumeration value="1"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="BilansJednostkaMikro">
+		<xsd:annotation>
+			<xsd:documentation>Bilans jednostki mikro</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="Aktywa">
+				<xsd:annotation>
+					<xsd:documentation>Aktywa razem</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:complexContent>
+						<xsd:extension base="dtsf:TKwotyPozycji">
+							<xsd:sequence minOccurs="0">
+								<xsd:element name="PozycjaUszczegolawiajaca_1" type="dtsf:TKwotyPozycjiSprawozdania" minOccurs="0" maxOccurs="unbounded">
+									<xsd:annotation>
+										<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="Aktywa_A" type="dtsf:TPozycjaSprawozdania" minOccurs="0">
+									<xsd:annotation>
+										<xsd:documentation>Aktywa trwałe, w tym środki trwałe</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="PozycjaUszczegolawiajaca_2" type="dtsf:TKwotyPozycjiSprawozdania" minOccurs="0" maxOccurs="unbounded">
+									<xsd:annotation>
+										<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="Aktywa_B" minOccurs="0">
+									<xsd:annotation>
+										<xsd:documentation>Aktywa obrotowe, w tym:</xsd:documentation>
+									</xsd:annotation>
+									<xsd:complexType>
+										<xsd:complexContent>
+											<xsd:extension base="dtsf:TKwotyPozycji">
+												<xsd:sequence minOccurs="0">
+													<xsd:element name="PozycjaUszczegolawiajaca_1" type="dtsf:TKwotyPozycjiSprawozdania" minOccurs="0" maxOccurs="unbounded">
+														<xsd:annotation>
+															<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+													<xsd:element name="Aktywa_B_1" type="dtsf:TPozycjaSprawozdania" minOccurs="0">
+														<xsd:annotation>
+															<xsd:documentation>- zapasy</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+													<xsd:element name="PozycjaUszczegolawiajaca_2" type="dtsf:TKwotyPozycjiSprawozdania" minOccurs="0" maxOccurs="unbounded">
+														<xsd:annotation>
+															<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+													<xsd:element name="Aktywa_B_2" type="dtsf:TPozycjaSprawozdania" minOccurs="0">
+														<xsd:annotation>
+															<xsd:documentation>- należności krótkoterminowe</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+													<xsd:element name="PozycjaUszczegolawiajaca_3" type="dtsf:TKwotyPozycjiSprawozdania" minOccurs="0" maxOccurs="unbounded">
+														<xsd:annotation>
+															<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+												</xsd:sequence>
+											</xsd:extension>
+										</xsd:complexContent>
+									</xsd:complexType>
+								</xsd:element>
+								<xsd:element name="PozycjaUszczegolawiajaca_3" type="dtsf:TKwotyPozycjiSprawozdania" minOccurs="0" maxOccurs="unbounded">
+									<xsd:annotation>
+										<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="Aktywa_C" type="dtsf:TPozycjaSprawozdania" minOccurs="0">
+									<xsd:annotation>
+										<xsd:documentation>Należne wpłaty na kapitał (fundusz) podstawowy</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="PozycjaUszczegolawiajaca_4" type="dtsf:TKwotyPozycjiSprawozdania" minOccurs="0" maxOccurs="unbounded">
+									<xsd:annotation>
+										<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="Aktywa_D" type="dtsf:TPozycjaSprawozdania" minOccurs="0">
+									<xsd:annotation>
+										<xsd:documentation>Udziały (akcje) własne</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="PozycjaUszczegolawiajaca_5" type="dtsf:TKwotyPozycjiSprawozdania" minOccurs="0" maxOccurs="unbounded">
+									<xsd:annotation>
+										<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+							</xsd:sequence>
+						</xsd:extension>
+					</xsd:complexContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Pasywa">
+				<xsd:annotation>
+					<xsd:documentation>Pasywa razem</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:complexContent>
+						<xsd:extension base="dtsf:TKwotyPozycji">
+							<xsd:sequence minOccurs="0">
+								<xsd:element name="PozycjaUszczegolawiajaca_1" type="dtsf:TKwotyPozycjiSprawozdania" minOccurs="0" maxOccurs="unbounded">
+									<xsd:annotation>
+										<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="Pasywa_A" minOccurs="0">
+									<xsd:annotation>
+										<xsd:documentation>Kapitał (fundusz) własny, w tym:</xsd:documentation>
+									</xsd:annotation>
+									<xsd:complexType>
+										<xsd:complexContent>
+											<xsd:extension base="dtsf:TKwotyPozycji">
+												<xsd:sequence minOccurs="0">
+													<xsd:element name="PozycjaUszczegolawiajaca_1" type="dtsf:TKwotyPozycjiSprawozdania" minOccurs="0" maxOccurs="unbounded">
+														<xsd:annotation>
+															<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+													<xsd:element name="Pasywa_A_1" type="dtsf:TPozycjaSprawozdania" minOccurs="0">
+														<xsd:annotation>
+															<xsd:documentation>- kapitał (fundusz) podstawowy</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+													<xsd:element name="PozycjaUszczegolawiajaca_2" type="dtsf:TKwotyPozycjiSprawozdania" minOccurs="0" maxOccurs="unbounded">
+														<xsd:annotation>
+															<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+												</xsd:sequence>
+											</xsd:extension>
+										</xsd:complexContent>
+									</xsd:complexType>
+								</xsd:element>
+								<xsd:element name="PozycjaUszczegolawiajaca_2" type="dtsf:TKwotyPozycjiSprawozdania" minOccurs="0" maxOccurs="unbounded">
+									<xsd:annotation>
+										<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="Pasywa_B" minOccurs="0">
+									<xsd:annotation>
+										<xsd:documentation>Zobowiązania i rezerwy na zobowiązania, w tym:</xsd:documentation>
+									</xsd:annotation>
+									<xsd:complexType>
+										<xsd:complexContent>
+											<xsd:extension base="dtsf:TKwotyPozycji">
+												<xsd:sequence minOccurs="0">
+													<xsd:element name="PozycjaUszczegolawiajaca_1" type="dtsf:TKwotyPozycjiSprawozdania" minOccurs="0" maxOccurs="unbounded">
+														<xsd:annotation>
+															<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+													<xsd:element name="Pasywa_B_1" type="dtsf:TPozycjaSprawozdania" minOccurs="0">
+														<xsd:annotation>
+															<xsd:documentation>- rezerwy na zobowiązania</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+													<xsd:element name="PozycjaUszczegolawiajaca_2" type="dtsf:TKwotyPozycjiSprawozdania" minOccurs="0" maxOccurs="unbounded">
+														<xsd:annotation>
+															<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+													<xsd:element name="Pasywa_B_2" type="dtsf:TPozycjaSprawozdania" minOccurs="0">
+														<xsd:annotation>
+															<xsd:documentation>- zobowiązania z tytułu kredytów i pożyczek</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+													<xsd:element name="PozycjaUszczegolawiajaca_3" type="dtsf:TKwotyPozycjiSprawozdania" minOccurs="0" maxOccurs="unbounded">
+														<xsd:annotation>
+															<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+												</xsd:sequence>
+											</xsd:extension>
+										</xsd:complexContent>
+									</xsd:complexType>
+								</xsd:element>
+								<xsd:element name="PozycjaUszczegolawiajaca_3" type="dtsf:TKwotyPozycjiSprawozdania" minOccurs="0" maxOccurs="unbounded">
+									<xsd:annotation>
+										<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+							</xsd:sequence>
+						</xsd:extension>
+					</xsd:complexContent>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="RZiSJednostkaMikro">
+		<xsd:annotation>
+			<xsd:documentation>Rachunek zysków i strat jednostki mikro</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="PozycjaUszczegolawiajaca_1" type="dtsf:TKwotyPozycjiSprawozdania" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="A" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Przychody podstawowej działalności operacyjnej i zrównane z nimi, w tym:</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:complexContent>
+						<xsd:extension base="dtsf:TKwotyPozycji">
+							<xsd:sequence minOccurs="0">
+								<xsd:element name="PozycjaUszczegolawiajaca_1" type="dtsf:TKwotyPozycjiSprawozdania" minOccurs="0" maxOccurs="unbounded">
+									<xsd:annotation>
+										<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="A_1" type="dtsf:TPozycjaSprawozdania" minOccurs="0">
+									<xsd:annotation>
+										<xsd:documentation>- zmiana stanu produktów (zwiększenie - wartość dodatnia, zmniejszenie - wartość ujemna)</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="PozycjaUszczegolawiajaca_2" type="dtsf:TKwotyPozycjiSprawozdania" minOccurs="0" maxOccurs="unbounded">
+									<xsd:annotation>
+										<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+							</xsd:sequence>
+						</xsd:extension>
+					</xsd:complexContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="PozycjaUszczegolawiajaca_2" type="dtsf:TKwotyPozycjiSprawozdania" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="B" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Koszty podstawowej działalności operacyjnej</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:complexContent>
+						<xsd:extension base="dtsf:TKwotyPozycji">
+							<xsd:sequence minOccurs="0">
+								<xsd:element name="PozycjaUszczegolawiajaca_1" type="dtsf:TKwotyPozycjiSprawozdania" minOccurs="0" maxOccurs="unbounded">
+									<xsd:annotation>
+										<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="B_I" type="dtsf:TPozycjaSprawozdania" minOccurs="0">
+									<xsd:annotation>
+										<xsd:documentation>Amortyzacja</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="PozycjaUszczegolawiajaca_2" type="dtsf:TKwotyPozycjiSprawozdania" minOccurs="0" maxOccurs="unbounded">
+									<xsd:annotation>
+										<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="B_II" type="dtsf:TPozycjaSprawozdania" minOccurs="0">
+									<xsd:annotation>
+										<xsd:documentation>Zużycie materiałów i energii</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="PozycjaUszczegolawiajaca_3" type="dtsf:TKwotyPozycjiSprawozdania" minOccurs="0" maxOccurs="unbounded">
+									<xsd:annotation>
+										<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="B_III" type="dtsf:TPozycjaSprawozdania" minOccurs="0">
+									<xsd:annotation>
+										<xsd:documentation>Wynagrodzenia, ubezpieczenia społeczne i inne świadczenia</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="PozycjaUszczegolawiajaca_4" type="dtsf:TKwotyPozycjiSprawozdania" minOccurs="0" maxOccurs="unbounded">
+									<xsd:annotation>
+										<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="B_IV" type="dtsf:TPozycjaSprawozdania" minOccurs="0">
+									<xsd:annotation>
+										<xsd:documentation>Pozostałe koszty</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="PozycjaUszczegolawiajaca_5" type="dtsf:TKwotyPozycjiSprawozdania" minOccurs="0" maxOccurs="unbounded">
+									<xsd:annotation>
+										<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+							</xsd:sequence>
+						</xsd:extension>
+					</xsd:complexContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="PozycjaUszczegolawiajaca_3" type="dtsf:TKwotyPozycjiSprawozdania" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="C" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Pozostałe przychody i zyski, w tym:</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:complexContent>
+						<xsd:extension base="dtsf:TKwotyPozycji">
+							<xsd:sequence minOccurs="0">
+								<xsd:element name="PozycjaUszczegolawiajaca_1" type="dtsf:TKwotyPozycjiSprawozdania" minOccurs="0" maxOccurs="unbounded">
+									<xsd:annotation>
+										<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="C_1" type="dtsf:TPozycjaSprawozdania" minOccurs="0">
+									<xsd:annotation>
+										<xsd:documentation>- aktualizacja wartości aktywów</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="PozycjaUszczegolawiajaca_2" type="dtsf:TKwotyPozycjiSprawozdania" minOccurs="0" maxOccurs="unbounded">
+									<xsd:annotation>
+										<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+							</xsd:sequence>
+						</xsd:extension>
+					</xsd:complexContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="PozycjaUszczegolawiajaca_4" type="dtsf:TKwotyPozycjiSprawozdania" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="D" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Pozostałe koszty i straty, w tym:</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:complexContent>
+						<xsd:extension base="dtsf:TKwotyPozycji">
+							<xsd:sequence minOccurs="0">
+								<xsd:element name="PozycjaUszczegolawiajaca_1" type="dtsf:TKwotyPozycjiSprawozdania" minOccurs="0" maxOccurs="unbounded">
+									<xsd:annotation>
+										<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="D_1" type="dtsf:TPozycjaSprawozdania" minOccurs="0">
+									<xsd:annotation>
+										<xsd:documentation>- aktualizacja wartości aktywów</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="PozycjaUszczegolawiajaca_2" type="dtsf:TKwotyPozycjiSprawozdania" minOccurs="0" maxOccurs="unbounded">
+									<xsd:annotation>
+										<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+							</xsd:sequence>
+						</xsd:extension>
+					</xsd:complexContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="PozycjaUszczegolawiajaca_5" type="dtsf:TKwotyPozycjiSprawozdania" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="E" type="dtsf:TPozycjaSprawozdania" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Podatek dochodowy</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="PozycjaUszczegolawiajaca_6" type="dtsf:TKwotyPozycjiSprawozdania" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:choice>
+				<xsd:element name="F" type="dtsf:TPozycjaSprawozdania">
+					<xsd:annotation>
+						<xsd:documentation>Zysk/strata netto (A-B+C-D-E)
+(dla jednostek mikro, o których mowa w art. 3 ust. 1a pkt 1, 3 i 4 oraz ust. 1b ustawy)</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="G">
+					<xsd:annotation>
+						<xsd:documentation>Wynik finansowy netto ogółem (A-B+C-D-E), w tym:
+(dla jednostek mikro, o których mowa w art. 3 ust. 1a pkt 2 ustawy).</xsd:documentation>
+					</xsd:annotation>
+					<xsd:complexType>
+						<xsd:complexContent>
+							<xsd:extension base="dtsf:TKwotyPozycji">
+								<xsd:sequence minOccurs="0">
+									<xsd:element name="PozycjaUszczegolawiajaca_1" type="dtsf:TKwotyPozycjiSprawozdania" minOccurs="0" maxOccurs="unbounded">
+										<xsd:annotation>
+											<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+										</xsd:annotation>
+									</xsd:element>
+									<xsd:element name="G_I" type="dtsf:TPozycjaSprawozdania" minOccurs="0">
+										<xsd:annotation>
+											<xsd:documentation>Nadwyżka przychodów nad kosztami (wartość dodatnia)</xsd:documentation>
+										</xsd:annotation>
+									</xsd:element>
+									<xsd:element name="PozycjaUszczegolawiajaca_2" type="dtsf:TKwotyPozycjiSprawozdania" minOccurs="0" maxOccurs="unbounded">
+										<xsd:annotation>
+											<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+										</xsd:annotation>
+									</xsd:element>
+									<xsd:element name="G_II" type="dtsf:TPozycjaSprawozdania" minOccurs="0">
+										<xsd:annotation>
+											<xsd:documentation>Nadwyżka kosztów nad przychodami (wartość ujemna)</xsd:documentation>
+										</xsd:annotation>
+									</xsd:element>
+									<xsd:element name="PozycjaUszczegolawiajaca_3" type="dtsf:TKwotyPozycjiSprawozdania" minOccurs="0" maxOccurs="unbounded">
+										<xsd:annotation>
+											<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+										</xsd:annotation>
+									</xsd:element>
+								</xsd:sequence>
+							</xsd:extension>
+						</xsd:complexContent>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:choice>
+			<xsd:element name="PozycjaUszczegolawiajaca_7" type="dtsf:TKwotyPozycjiSprawozdania" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="BilansJednostkaMikroWTys">
+		<xsd:annotation>
+			<xsd:documentation>Bilans jednostki mikro</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="Aktywa">
+				<xsd:annotation>
+					<xsd:documentation>Aktywa razem</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:complexContent>
+						<xsd:extension base="dtsf:TKwotyPozycjiTys">
+							<xsd:sequence minOccurs="0">
+								<xsd:element name="PozycjaUszczegolawiajaca_1" type="dtsf:TKwotyPozycjiSprawozdaniaTys" minOccurs="0" maxOccurs="unbounded">
+									<xsd:annotation>
+										<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="Aktywa_A" type="dtsf:TPozycjaSprawozdaniaTys" minOccurs="0">
+									<xsd:annotation>
+										<xsd:documentation>Aktywa trwałe, w tym środki trwałe</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="PozycjaUszczegolawiajaca_2" type="dtsf:TKwotyPozycjiSprawozdaniaTys" minOccurs="0" maxOccurs="unbounded">
+									<xsd:annotation>
+										<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="Aktywa_B" minOccurs="0">
+									<xsd:annotation>
+										<xsd:documentation>Aktywa obrotowe, w tym:</xsd:documentation>
+									</xsd:annotation>
+									<xsd:complexType>
+										<xsd:complexContent>
+											<xsd:extension base="dtsf:TKwotyPozycjiTys">
+												<xsd:sequence minOccurs="0">
+													<xsd:element name="PozycjaUszczegolawiajaca_1" type="dtsf:TKwotyPozycjiSprawozdaniaTys" minOccurs="0" maxOccurs="unbounded">
+														<xsd:annotation>
+															<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+													<xsd:element name="Aktywa_B_1" type="dtsf:TPozycjaSprawozdaniaTys" minOccurs="0">
+														<xsd:annotation>
+															<xsd:documentation>- zapasy</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+													<xsd:element name="PozycjaUszczegolawiajaca_2" type="dtsf:TKwotyPozycjiSprawozdaniaTys" minOccurs="0" maxOccurs="unbounded">
+														<xsd:annotation>
+															<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+													<xsd:element name="Aktywa_B_2" type="dtsf:TPozycjaSprawozdaniaTys" minOccurs="0">
+														<xsd:annotation>
+															<xsd:documentation>- należności krótkoterminowe</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+													<xsd:element name="PozycjaUszczegolawiajaca_3" type="dtsf:TKwotyPozycjiSprawozdaniaTys" minOccurs="0" maxOccurs="unbounded">
+														<xsd:annotation>
+															<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+												</xsd:sequence>
+											</xsd:extension>
+										</xsd:complexContent>
+									</xsd:complexType>
+								</xsd:element>
+								<xsd:element name="PozycjaUszczegolawiajaca_3" type="dtsf:TKwotyPozycjiSprawozdaniaTys" minOccurs="0" maxOccurs="unbounded">
+									<xsd:annotation>
+										<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="Aktywa_C" type="dtsf:TPozycjaSprawozdaniaTys" minOccurs="0">
+									<xsd:annotation>
+										<xsd:documentation>Należne wpłaty na kapitał (fundusz) podstawowy</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="PozycjaUszczegolawiajaca_4" type="dtsf:TKwotyPozycjiSprawozdaniaTys" minOccurs="0" maxOccurs="unbounded">
+									<xsd:annotation>
+										<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="Aktywa_D" type="dtsf:TPozycjaSprawozdaniaTys" minOccurs="0">
+									<xsd:annotation>
+										<xsd:documentation>Udziały (akcje) własne</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="PozycjaUszczegolawiajaca_5" type="dtsf:TKwotyPozycjiSprawozdaniaTys" minOccurs="0" maxOccurs="unbounded">
+									<xsd:annotation>
+										<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+							</xsd:sequence>
+						</xsd:extension>
+					</xsd:complexContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Pasywa">
+				<xsd:annotation>
+					<xsd:documentation>Pasywa razem</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:complexContent>
+						<xsd:extension base="dtsf:TKwotyPozycjiTys">
+							<xsd:sequence minOccurs="0">
+								<xsd:element name="PozycjaUszczegolawiajaca_1" type="dtsf:TKwotyPozycjiSprawozdaniaTys" minOccurs="0" maxOccurs="unbounded">
+									<xsd:annotation>
+										<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="Pasywa_A" minOccurs="0">
+									<xsd:annotation>
+										<xsd:documentation>Kapitał (fundusz) własny, w tym:</xsd:documentation>
+									</xsd:annotation>
+									<xsd:complexType>
+										<xsd:complexContent>
+											<xsd:extension base="dtsf:TKwotyPozycjiTys">
+												<xsd:sequence minOccurs="0">
+													<xsd:element name="PozycjaUszczegolawiajaca_1" type="dtsf:TKwotyPozycjiSprawozdaniaTys" minOccurs="0" maxOccurs="unbounded">
+														<xsd:annotation>
+															<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+													<xsd:element name="Pasywa_A_1" type="dtsf:TPozycjaSprawozdaniaTys" minOccurs="0">
+														<xsd:annotation>
+															<xsd:documentation>- kapitał (fundusz) podstawowy</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+													<xsd:element name="PozycjaUszczegolawiajaca_2" type="dtsf:TKwotyPozycjiSprawozdaniaTys" minOccurs="0" maxOccurs="unbounded">
+														<xsd:annotation>
+															<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+												</xsd:sequence>
+											</xsd:extension>
+										</xsd:complexContent>
+									</xsd:complexType>
+								</xsd:element>
+								<xsd:element name="PozycjaUszczegolawiajaca_2" type="dtsf:TKwotyPozycjiSprawozdaniaTys" minOccurs="0" maxOccurs="unbounded">
+									<xsd:annotation>
+										<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="Pasywa_B" minOccurs="0">
+									<xsd:annotation>
+										<xsd:documentation>Zobowiązania i rezerwy na zobowiązania, w tym:</xsd:documentation>
+									</xsd:annotation>
+									<xsd:complexType>
+										<xsd:complexContent>
+											<xsd:extension base="dtsf:TKwotyPozycjiTys">
+												<xsd:sequence minOccurs="0">
+													<xsd:element name="PozycjaUszczegolawiajaca_1" type="dtsf:TKwotyPozycjiSprawozdaniaTys" minOccurs="0" maxOccurs="unbounded">
+														<xsd:annotation>
+															<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+													<xsd:element name="Pasywa_B_1" type="dtsf:TPozycjaSprawozdaniaTys" minOccurs="0">
+														<xsd:annotation>
+															<xsd:documentation>- rezerwy na zobowiązania</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+													<xsd:element name="PozycjaUszczegolawiajaca_2" type="dtsf:TKwotyPozycjiSprawozdaniaTys" minOccurs="0" maxOccurs="unbounded">
+														<xsd:annotation>
+															<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+													<xsd:element name="Pasywa_B_2" type="dtsf:TPozycjaSprawozdaniaTys" minOccurs="0">
+														<xsd:annotation>
+															<xsd:documentation>- zobowiązania z tytułu kredytów i pożyczek</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+													<xsd:element name="PozycjaUszczegolawiajaca_3" type="dtsf:TKwotyPozycjiSprawozdaniaTys" minOccurs="0" maxOccurs="unbounded">
+														<xsd:annotation>
+															<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+												</xsd:sequence>
+											</xsd:extension>
+										</xsd:complexContent>
+									</xsd:complexType>
+								</xsd:element>
+								<xsd:element name="PozycjaUszczegolawiajaca_3" type="dtsf:TKwotyPozycjiSprawozdaniaTys" minOccurs="0" maxOccurs="unbounded">
+									<xsd:annotation>
+										<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+							</xsd:sequence>
+						</xsd:extension>
+					</xsd:complexContent>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="RZiSJednostkaMikroWTys">
+		<xsd:annotation>
+			<xsd:documentation>Rachunek zysków i strat jednostki mikro</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="PozycjaUszczegolawiajaca_1" type="dtsf:TKwotyPozycjiSprawozdaniaTys" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="A" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Przychody podstawowej działalności operacyjnej i zrównane z nimi, w tym:</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:complexContent>
+						<xsd:extension base="dtsf:TKwotyPozycjiTys">
+							<xsd:sequence minOccurs="0">
+								<xsd:element name="PozycjaUszczegolawiajaca_1" type="dtsf:TKwotyPozycjiSprawozdaniaTys" minOccurs="0" maxOccurs="unbounded">
+									<xsd:annotation>
+										<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="A_1" type="dtsf:TPozycjaSprawozdaniaTys" minOccurs="0">
+									<xsd:annotation>
+										<xsd:documentation>- zmiana stanu produktów (zwiększenie - wartość dodatnia, zmniejszenie - wartość ujemna)</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="PozycjaUszczegolawiajaca_2" type="dtsf:TKwotyPozycjiSprawozdaniaTys" minOccurs="0" maxOccurs="unbounded">
+									<xsd:annotation>
+										<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+							</xsd:sequence>
+						</xsd:extension>
+					</xsd:complexContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="PozycjaUszczegolawiajaca_2" type="dtsf:TKwotyPozycjiSprawozdaniaTys" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="B" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Koszty podstawowej działalności operacyjnej</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:complexContent>
+						<xsd:extension base="dtsf:TKwotyPozycjiTys">
+							<xsd:sequence minOccurs="0">
+								<xsd:element name="PozycjaUszczegolawiajaca_1" type="dtsf:TKwotyPozycjiSprawozdaniaTys" minOccurs="0" maxOccurs="unbounded">
+									<xsd:annotation>
+										<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="B_I" type="dtsf:TPozycjaSprawozdaniaTys" minOccurs="0">
+									<xsd:annotation>
+										<xsd:documentation>Amortyzacja</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="PozycjaUszczegolawiajaca_2" type="dtsf:TKwotyPozycjiSprawozdaniaTys" minOccurs="0" maxOccurs="unbounded">
+									<xsd:annotation>
+										<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="B_II" type="dtsf:TPozycjaSprawozdaniaTys" minOccurs="0">
+									<xsd:annotation>
+										<xsd:documentation>Zużycie materiałów i energii</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="PozycjaUszczegolawiajaca_3" type="dtsf:TKwotyPozycjiSprawozdaniaTys" minOccurs="0" maxOccurs="unbounded">
+									<xsd:annotation>
+										<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="B_III" type="dtsf:TPozycjaSprawozdaniaTys" minOccurs="0">
+									<xsd:annotation>
+										<xsd:documentation>Wynagrodzenia, ubezpieczenia społeczne i inne świadczenia</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="PozycjaUszczegolawiajaca_4" type="dtsf:TKwotyPozycjiSprawozdaniaTys" minOccurs="0" maxOccurs="unbounded">
+									<xsd:annotation>
+										<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="B_IV" type="dtsf:TPozycjaSprawozdaniaTys" minOccurs="0">
+									<xsd:annotation>
+										<xsd:documentation>Pozostałe koszty</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="PozycjaUszczegolawiajaca_5" type="dtsf:TKwotyPozycjiSprawozdaniaTys" minOccurs="0" maxOccurs="unbounded">
+									<xsd:annotation>
+										<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+							</xsd:sequence>
+						</xsd:extension>
+					</xsd:complexContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="PozycjaUszczegolawiajaca_3" type="dtsf:TKwotyPozycjiSprawozdaniaTys" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="C" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Pozostałe przychody i zyski, w tym:</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:complexContent>
+						<xsd:extension base="dtsf:TKwotyPozycjiTys">
+							<xsd:sequence minOccurs="0">
+								<xsd:element name="PozycjaUszczegolawiajaca_1" type="dtsf:TKwotyPozycjiSprawozdaniaTys" minOccurs="0" maxOccurs="unbounded">
+									<xsd:annotation>
+										<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="C_1" type="dtsf:TPozycjaSprawozdaniaTys" minOccurs="0">
+									<xsd:annotation>
+										<xsd:documentation>- aktualizacja wartości aktywów</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="PozycjaUszczegolawiajaca_2" type="dtsf:TKwotyPozycjiSprawozdaniaTys" minOccurs="0" maxOccurs="unbounded">
+									<xsd:annotation>
+										<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+							</xsd:sequence>
+						</xsd:extension>
+					</xsd:complexContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="PozycjaUszczegolawiajaca_4" type="dtsf:TKwotyPozycjiSprawozdaniaTys" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="D" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Pozostałe koszty i straty, w tym:</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:complexContent>
+						<xsd:extension base="dtsf:TKwotyPozycjiTys">
+							<xsd:sequence minOccurs="0">
+								<xsd:element name="PozycjaUszczegolawiajaca_1" type="dtsf:TKwotyPozycjiSprawozdaniaTys" minOccurs="0" maxOccurs="unbounded">
+									<xsd:annotation>
+										<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="D_1" type="dtsf:TPozycjaSprawozdaniaTys" minOccurs="0">
+									<xsd:annotation>
+										<xsd:documentation>- aktualizacja wartości aktywów</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="PozycjaUszczegolawiajaca_2" type="dtsf:TKwotyPozycjiSprawozdaniaTys" minOccurs="0" maxOccurs="unbounded">
+									<xsd:annotation>
+										<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+							</xsd:sequence>
+						</xsd:extension>
+					</xsd:complexContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="PozycjaUszczegolawiajaca_5" type="dtsf:TKwotyPozycjiSprawozdaniaTys" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="E" type="dtsf:TPozycjaSprawozdaniaTys" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Podatek dochodowy</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="PozycjaUszczegolawiajaca_6" type="dtsf:TKwotyPozycjiSprawozdaniaTys" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:choice>
+				<xsd:element name="F" type="dtsf:TPozycjaSprawozdaniaTys">
+					<xsd:annotation>
+						<xsd:documentation>Zysk/strata netto (A-B+C-D-E)
+	(dla jednostek mikro, o których mowa w art. 3 ust. 1a pkt 1, 3 i 4 oraz ust. 1b ustawy)</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="G">
+					<xsd:annotation>
+						<xsd:documentation>Wynik finansowy netto ogółem (A-B+C-D-E), w tym:
+	(dla jednostek mikro, o których mowa w art. 3 ust. 1a pkt 2 ustawy).</xsd:documentation>
+					</xsd:annotation>
+					<xsd:complexType>
+						<xsd:complexContent>
+							<xsd:extension base="dtsf:TKwotyPozycjiTys">
+								<xsd:sequence minOccurs="0">
+									<xsd:element name="PozycjaUszczegolawiajaca_1" type="dtsf:TKwotyPozycjiSprawozdaniaTys" minOccurs="0" maxOccurs="unbounded">
+										<xsd:annotation>
+											<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+										</xsd:annotation>
+									</xsd:element>
+									<xsd:element name="G_I" type="dtsf:TPozycjaSprawozdaniaTys" minOccurs="0">
+										<xsd:annotation>
+											<xsd:documentation>Nadwyżka przychodów nad kosztami (wartość dodatnia)</xsd:documentation>
+										</xsd:annotation>
+									</xsd:element>
+									<xsd:element name="PozycjaUszczegolawiajaca_2" type="dtsf:TKwotyPozycjiSprawozdaniaTys" minOccurs="0" maxOccurs="unbounded">
+										<xsd:annotation>
+											<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+										</xsd:annotation>
+									</xsd:element>
+									<xsd:element name="G_II" type="dtsf:TPozycjaSprawozdaniaTys" minOccurs="0">
+										<xsd:annotation>
+											<xsd:documentation>Nadwyżka kosztów nad przychodami (wartość ujemna)</xsd:documentation>
+										</xsd:annotation>
+									</xsd:element>
+									<xsd:element name="PozycjaUszczegolawiajaca_3" type="dtsf:TKwotyPozycjiSprawozdaniaTys" minOccurs="0" maxOccurs="unbounded">
+										<xsd:annotation>
+											<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+										</xsd:annotation>
+									</xsd:element>
+								</xsd:sequence>
+							</xsd:extension>
+						</xsd:complexContent>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:choice>
+			<xsd:element name="PozycjaUszczegolawiajaca_7" type="dtsf:TKwotyPozycjiSprawozdaniaTys" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

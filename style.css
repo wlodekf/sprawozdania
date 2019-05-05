@@ -1,0 +1,381 @@
+@page {
+	size: A4 portrait;
+	margin: 15mm;
+}
+
+body {
+	font-family: 'Arial', sans-serif; 
+	font-size: 14px;
+	line-height: 1.4em;
+	text-align: justify;
+}
+
+section {
+	font-family: 'Arial', sans-serif; 
+	max-width: 800px; 
+	margin: 0 auto; 
+	font-size: 14px;
+	margin-bottom: 70px;
+	overflow: hidden;
+	padding: 0 20px 0 30px;
+}
+
+section.hdr {
+	margin-top: 50px;
+}
+
+section.bil {
+	padding: 0;
+}
+
+table {
+	text-align: start;
+}
+
+th {
+	text-align: center;
+}
+
+.tyt {
+	margin-bottom: 10px; 
+	text-align: center; 
+	font-size: 18px; 
+	font-weight: bold; 
+	text-transform: uppercase;
+}
+
+.tyt1 {
+	font-size: 24px;
+}
+		
+.tyt2 {
+	margin-bottom: 20px; 
+	text-align: center; 
+	font-size: 16px; 
+	font-weight: bold;
+}
+
+@media print {
+	body, section {
+		margin: 0;
+	}
+	section.pbb {
+		page-break-before: always;
+	}
+	section.hdr {
+		margin-top: 50px;
+		margin-bottom: 60px;
+	}
+}
+
+.cen {
+	text-align: center;
+}
+
+.b {font-weight: bold;}
+
+.wpr {
+	margin-bottom: 30px;
+}
+
+.wpr2 {
+	margin-top: 20px;
+}
+
+.sek {
+	margin-top: 40px;
+}
+
+span.pod {
+	font-size: 12px; 
+	font-weight: normal;
+}
+
+a.lnk {
+	text-decoration: none;
+}
+
+h1 {
+	font-size: 18px;
+	margin-block-start: 2em;
+}
+
+h2 {
+	font-size: 16px;
+	text-decoration: underline;
+}
+
+h1.txt {
+	font-size: 14px;
+	font-style: italic;
+	text-decoration: underline;
+}
+
+h2.txt {
+	font-size: 12px;
+	font-style: italic;
+	text-decoration: underline;
+}
+
+li.txt {
+	list-style-position: outside;
+}
+		
+th, td {
+	border-left: 1px solid #a0a0a0;
+	border-top: 1px solid #d0d0d0;
+	font-family: Arial;
+	padding: 2px;
+}
+
+th:last-child, td:last-child {
+	border-right: 1px solid #d0d0d0;
+}
+
+tr:last-child th, tr:last-child td {
+	border-bottom: 1px solid #d0d0d0;
+}
+
+table.raport th, table.raport td {
+	font-size: 11px;
+	line-height: 12px;
+	padding: 2px;
+}
+
+table.raport.bilans th, table.raport.bilans td {		
+	font-size: 9px;
+	line-height: 10px;
+	padding: 2px 2px;
+}
+
+table.raport tr.empty td {
+	line-height: 8px;
+	padding: 1px 2px;
+}
+			
+table.raport tr.sumbil td {
+	padding: 10px 2px; 
+}
+
+@media print {
+	
+	table.raport td {
+		line-height: 12px;
+		padding: 4px 2px;
+	}
+	
+	table.raport.przeplywy td {
+		line-height: 10px;
+		padding: 1px 2px;
+	}
+	
+	table.raport.bilans th, table.raport.bilans td {		
+		line-height: 7px;
+		padding: 1px 2px;
+	}
+
+	table.raport.bilans.mala th, table.raport.bilans.mala td,
+	table.raport.bilans.mikro th, table.raport.bilans.mikro td {		
+		line-height: 15px;
+		padding: 3px 2px;
+	}
+
+	table.raport.bilans tr.empty td {
+		line-height: 6px;
+		padding: 1px 2px;
+	}
+
+	table.raport tr.sumbil td {
+		padding: 2px;
+	}
+}
+		
+table.przeplywy td {
+	padding-bottom: 1px;
+}
+
+table.raport th {
+	padding: 10px 2px;
+}
+
+table.raport.podatek td {
+	font-size: 11px;
+	padding: 2px 4px 3px 5px;
+}
+
+table.ident th, table.ident td {
+	font-size: 14px;
+}		
+table {
+	width: 100%;
+}
+
+table.ident td.tl {
+	width: 30%;
+}
+table.ident td.ts {
+	_padding-left: 30%;
+	background-color: #e8e8ff;
+}
+table.ident td.big {
+	font-size: 20px;
+	font-weight: bold;
+}
+table.aktywa {
+	float: left;
+	width: 55%;
+}
+table.pasywa {
+	float: left;
+	width: 45%;
+}
+.ar {
+	text-align: right;
+	font-size: 10px;
+}
+table.bilans td.kwoty.ar {
+	font-size: 10px;
+	width: 70px !important;		
+}
+th.ar {
+	text-align: right;
+	font-size: 10px;
+	padding: 5px 2px;
+}
+tr.sumbil td {
+	font-weight: bold;
+	text-transform: uppercase;
+	font-size: 10px !important;
+	padding: 5px 2px;
+}
+.content-block, p {
+	page-break-inside: avoid;
+}
+hr {
+	border-top: 1px solid #d0d0d0;
+}
+.wsnw {
+	white-space: nowrap;
+	text-align: center;
+}
+td.pp {
+	white-space: nowrap;
+}
+tr.rh {
+	background-color: #e8e8ff;
+}
+tr:hover {
+	background-color: #e0e0e0;
+}
+td.kwoty {
+    width: 115px;
+}
+table.raport td.kwoty {
+	font-size: 12px;
+}
+table.raport td.bilans {
+	font-size: 10px;
+}
+table.raport.bilans td.kwotyp {
+	min-width: 90px;
+	max-width: 115px;
+}
+table.raport.podatek td.kwotyp {
+	min-width: 85px;
+}
+table.raport td.tekst.klu0 {
+    padding-left: 5px;
+}		
+table.raport td.tekst.klu10 {
+    padding-left: 20px;
+}
+table.raport td.tekst.klu20 {
+    padding-left: 30px;
+}
+table.raport td.tekst.klu30 {
+    padding-left: 40px;
+}
+table.raport td.tekst.klu40 {
+    padding-left: 50px;
+}
+table.raport td.tekst.klu50 {
+    padding-left: 60px;
+}
+table.raport td.tekst.klu60 {
+    padding-left: 90px;
+}
+
+table.raport.bilans td.tekst.klu0 {
+    padding-left: 0px;
+}	
+table.raport.bilans td.tekst.klu10 {
+    padding-left: 2px;
+}
+table.raport.bilans td.tekst.klu20 {
+    padding-left: 6px;
+}
+table.raport.bilans td.tekst.klu30 {
+    padding-left: 10px;
+}
+table.raport.bilans td.tekst.klu40 {
+    padding-left: 14px;
+}
+table.raport.bilans td.tekst.klu50 {
+    padding-left: 18px;
+}
+table.raport.bilans td.tekst.klu60 {
+    padding-left: 22px;
+}
+
+.wyrUBS {
+	text-transform: uppercase;
+	font-weight: bold;
+	height: 30px;
+	vertical-align: middle;
+	background-color: #f0f0f0;
+}
+.wyrUB {
+	text-transform: uppercase;
+	font-weight: bold;
+}
+.wyrB {
+	font-weight: bold;
+}
+.wyrU {
+	text-transform: uppercase;
+}
+@media print {
+	table.raport th, table.raport td {
+		line-height: 8px;
+	}
+	.wyrUBS {
+    	height: 20px;
+		background-color: #e0e0e0;
+	}
+	table.raport.bilans tr.wyrUBS {
+    	height: 10px;
+		background-color: #e0e0e0;
+	}    		
+	table.raport tr.wyrUBS th, table.raport tr.wyrUBS td {
+		line-height: 10px;
+	} 
+}
+
+div.phe {
+	margin: 0 auto;
+	text-align: center;
+	font-size: 12px;
+	padding-top: 0;
+	margin-bottom: 20px;
+	border-bottom: 1px solid #d0d0d0;
+}
+
+@media print {
+	div.phe {
+		display: none;
+	}
+}
+	 
+.ujemna {
+	color: red;
+}

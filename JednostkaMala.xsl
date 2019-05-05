@@ -8,24 +8,36 @@
 	xmlns:exsl="http://exslt.org/common" extension-element-prefixes="exsl"
                 
 	xmlns:etd="http://crd.gov.pl/xml/schematy/dziedzinowe/mf/2016/01/25/eD/DefinicjeTypy/" 
-	xmlns:dtsf="http://www.mf.gov.pl/schematy/SF/DefinicjeTypySprawozdaniaFinansowe/2018/07/09/DefinicjeTypySprawozdaniaFinansowe/" 
-	xmlns:jin="http://www.mf.gov.pl/schematy/SF/DefinicjeTypySprawozdaniaFinansowe/2018/07/09/JednostkaInnaStruktury"	
-	xmlns:tns="http://www.mf.gov.pl/schematy/SF/DefinicjeTypySprawozdaniaFinansowe/2018/07/09/JednostkaInnaWZlotych"
+	xmlns:dtsf="http://www.mf.gov.pl/schematy/SF/DefinicjeTypySprawozdaniaFinansowe/2018/07/09/DefinicjeTypySprawozdaniaFinansowe/"
+	
+	xmlns:jma="http://www.mf.gov.pl/schematy/SF/DefinicjeTypySprawozdaniaFinansowe/2018/07/09/JednostkaMalaStruktury"	
+	xmlns:jin="http://www.mf.gov.pl/schematy/SF/DefinicjeTypySprawozdaniaFinansowe/2018/07/09/JednostkaInnaStruktury"
+	  
+	xmlns:tns="http://www.mf.gov.pl/schematy/SF/DefinicjeTypySprawozdaniaFinansowe/2018/07/09/JednostkaMalaWZlotych"
 >
 	
 <xsl:output version='1.0' encoding='UTF-8'/>
 
-<xsl:param name="schema-nazwy" select="'JednostkaInnaStrukturyDanychSprFin_v1-0.xsd'"/>
+<!-- Nazwy pozycji raportów -->
+<xsl:param name="jma-nazwy" select="'JednostkaMalaStrukturyDanychSprFin_v1-0.xsd'"/>
+<xsl:param name="jin-nazwy" select="'JednostkaInnaStrukturyDanychSprFin_v1-0.xsd'"/>
+
+<!-- Nazwy pozycli rozliczenia podatku -->
 <xsl:param name="schema-podatek" select="'StrukturyDanychSprFin_v1-1.xsd'"/>
+<!-- Nazwy kodów PKD -->
 <xsl:param name="schema-pkd" select="'KodyPKD_v2-0E.xsd'"/>
+<!-- Serwer czy klient -->
 <xsl:param name="procesor" select="'serwer'"/>
+<!-- Część sprawozdania do wyświetlenia -->
 <xsl:param name="root" select="''"/>
 
 <xsl:decimal-format name="pln" decimal-separator="," grouping-separator="."/>
 
+<!-- Do zmiany wielkości liter -->
 <xsl:variable name="lower" select="'abcdefghijklmnopqrstuvwxyząćęłńóśźż'" />
 <xsl:variable name="upper" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZĄĆĘŁŃÓŚŹŻ'" />
 	
+<!-- Formatowanie wielkości kwotowej, separacja tysięcy, chowanie zer. -->
 <xsl:template name="tkwotowy">
 	<xsl:param name="kwota"/>
 	<xsl:if test="$kwota">
@@ -37,6 +49,7 @@
 	</xsl:if>
 </xsl:template>
 
+<!-- Ustalenie znaku liczby/kwoty -->
 <xsl:template name="znak_kwoty">
 	<xsl:param name="kwota"/>
 	<xsl:choose>
@@ -49,9 +62,9 @@
 	</xsl:choose>
 </xsl:template>
 
+<!-- Ustalenie nazwy elementu - obsługa szczególnego przypadku gdy elementem jest pozycja użytkownika
+     wtedy nazwa elementu brana jest z komenatrza -->
 <xsl:template name="element">
-	<!-- Ustalenie nazwy elementu - obsługa szczególnego przypadku gdy elementem jest pozycja użytkownika
-	     wtedy nazwa elementu brana jest z komenatrza -->
     <xsl:choose>
 		<xsl:when test="substring-before(substring-after(name(.), ':'), '_') = 'PozycjaUszczegolawiajaca'">
 			<xsl:value-of select="comment()"/>
@@ -62,8 +75,10 @@
     </xsl:choose>
 </xsl:template>
 
+<!-- Ustalenie nazwy pozycji raportu -->
 <xsl:template name="nazwa-pozycji">
 	<xsl:param name="raport"/>
+	<xsl:param name="schemat"/>
 	<xsl:variable name="wyliczenie" select="substring-after(name(.), ':')"/>
 	
 	<xsl:choose>
@@ -75,9 +90,10 @@
 			 	<xsl:when test="$procesor = 'serwer'">
 					<!-- Obsługa przetwarzania XSLT po stronie serwera -->
 					  
-					<xsl:variable name="schema" select="document($schema-nazwy)"/>
+					<xsl:variable name="schema" select="document($schemat)"/>
+					
 					<xsl:choose>
-						<xsl:when test="$raport = 'ZestZmianWKapitaleJednostkaInna'">
+						<xsl:when test="$raport = 'ZestZmianWKapitaleJednostkaMala'">
 							<!-- Drzewo dla zmian w kapitale ma nieco inną strukturę niż pozostałe raporty -->
 							<xsl:value-of select="$schema//xsd:complexType[@name=$raport]//xsd:element[@name=$wyliczenie]//xs:documentation"/>
 						</xsl:when>
@@ -102,7 +118,7 @@
 					Zakłada się, że nazwy zostały wgrane/przeniesione z odpowiedniego schematu 
 					do arkusza XSL pod zmienną "nazwy" -->
 					<xsl:choose>
-						<xsl:when test="$raport = 'ZestZmianWKapitaleJednostkaInna'">
+						<xsl:when test="$raport = 'ZestZmianWKapitaleJednostkaMala'">
 							<!-- Drzewo dla zmian w kapitale ma nieco inną strukturę niż pozostałe raporty -->
 							<xsl:value-of select="exsl:node-set($nazwy)//xsd:complexType[@name=$raport]//xsd:element[@name=$wyliczenie]//xs:documentation"/>
 						</xsl:when>
@@ -120,12 +136,12 @@
 					</xsl:choose>
 				</xsl:otherwise>
 			</xsl:choose>
-			
 												
 		</xsl:otherwise>
 	</xsl:choose> 
 </xsl:template>
 
+<!-- Ustalenie nazwy pozycji w tabeli podatku -->
 <xsl:template name="nazwa-podatek">
 	<xsl:param name="raport"/>
 	<xsl:variable name="wyliczenie" select="substring-after(name(.), ':')"/>
@@ -150,6 +166,7 @@
 	</xsl:choose> 
 </xsl:template>
 
+<!-- Nazwa kodu PKD -->
 <xsl:template name="nazwa-pkd">
 	<xsl:variable name="kod" select="."/>
 	<xsl:choose>
@@ -179,8 +196,8 @@
 	<xsl:value-of select="$klu1 * 10"/>
 </xsl:template>
 
+<!-- Ustalenie liczby wystąpień podanego ciągu w podanym tekście -->
 <xsl:template name="ile-wystapien">
-	<!-- Ustalenie liczby wystąpień podanego ciągu w podanym tekście -->
 	
 	<xsl:param name="tekst"/>
 	<xsl:param name="ciag"/>
@@ -391,383 +408,7 @@
 <head>
 	<title><xsl:value-of select="//dtsf:NazwaFirmy"/> - Sprawozdanie Finansowe za <xsl:value-of select="substring(//dtsf:DataOd, 1, 4)"/></title>
 	<meta charset="utf-8"/>
-	<style>
-		@page {
-     		size: A4 portrait;
-			margin: 15mm;
-		}
-		
-		body {
-			font-family: 'Arial', sans-serif; 
-			font-size: 14px;
-			line-height: 1.4em;
-			text-align: justify;
-		}
-
-		section {
-			font-family: 'Arial', sans-serif; 
-			max-width: 800px; 
-			margin: 0 auto; 
-			font-size: 14px;
-			margin-bottom: 70px;
-			overflow: hidden;
-			padding: 0 20px 0 30px;
-		}
-
-		section.hdr {
-			margin-top: 50px;
-		}
-
-		section.bil {
-			padding: 0;
-		}
-		
-		table {
-			text-align: start;
-		}
-		
-		th {
-			text-align: center;
-		}
-		
-		.tyt {
-			margin-bottom: 10px; 
-			text-align: center; 
-			font-size: 18px; 
-			font-weight: bold; 
-			text-transform: uppercase;
-		}
-
-		.tyt1 {
-			font-size: 24px;
-		}
-				
-		.tyt2 {
-			margin-bottom: 20px; 
-			text-align: center; 
-			font-size: 16px; 
-			font-weight: bold;
-		}
-		
-		@media print {
-			body, section {
-				margin: 0;
-			}
-			section.pbb {
-				page-break-before: always;
-			}
-			section.hdr {
-				margin-top: 50px;
-				margin-bottom: 60px;
-			}
-		}
-		
-		.cen {
-			text-align: center;
-		}
-		
-		.b {font-weight: bold;}
-		
-		.wpr {
-			margin-bottom: 30px;
-		}
-		
-		.wpr2 {
-			margin-top: 20px;
-		}
-		
-		.sek {
-			margin-top: 40px;
-		}
-		
-		span.pod {
-			font-size: 12px; 
-			font-weight: normal;
-		}
-		
-		a.lnk {
-			text-decoration: none;
-		}
-		
-		h1 {
-  			font-size: 18px;
-  			margin-block-start: 2em;
-  		}
-  		
-  		h2 {
-  			font-size: 16px;
-  			text-decoration: underline;
-  		}
-  		
-		h1.txt {
-			font-size: 14px;
-			font-style: italic;
-			text-decoration: underline;
-		}
-		
-		h2.txt {
-			font-size: 12px;
-			font-style: italic;
-			text-decoration: underline;
-		}
-		
-		li.txt {
-			list-style-position: outside;
-		}
-				
-		th, td {
-			border-left: 1px solid #a0a0a0;
-			border-top: 1px solid #d0d0d0;
-			font-family: Arial;
-			padding: 2px;
-		}
-
-		th:last-child, td:last-child {
-			border-right: 1px solid #d0d0d0;
-		}
-
-		tr:last-child th, tr:last-child td {
-			border-bottom: 1px solid #d0d0d0;
-		}
-		
-		table.raport th, table.raport td {
-			font-size: 11px;
-			line-height: 12px;
-			padding: 2px;
-		}
-		
-		table.raport.bilans th, table.raport.bilans td {		
-			font-size: 9px;
-			line-height: 10px;
-			padding: 2px 2px;
-		}
-		
-		table.raport tr.empty td {
-			line-height: 8px;
-			padding: 1px 2px;
-		}
-					
-		table.raport tr.sumbil td {
-			padding: 10px 2px; 
-		}
-		
-		@media print {
-			
-			table.raport td {
-				line-height: 12px;
-				padding: 4px 2px;
-			}
-			
-			table.raport.przeplywy td {
-				line-height: 10px;
-				padding: 1px 2px;
-			}
-			
-			table.raport.bilans th, table.raport.bilans td {		
-				line-height: 7px;
-				padding: 1px 2px;
-			}
-						
-			table.raport.bilans tr.empty td {
-				line-height: 6px;
-				padding: 1px 2px;
-			}
-		
-			table.raport tr.sumbil td {
-				padding: 2px;
-			}
-		}
-				
-		table.przeplywy td {
-			padding-bottom: 1px;
-		}
-		
-		table.raport th {
-			padding: 10px 2px;
-		}
-		
-		table.raport.podatek td {
-			font-size: 11px;
-			padding: 2px 4px 3px 5px;
-		}
-		
-		table.ident th, table.ident td {
-			font-size: 14px;
-		}		
-		table {
-			width: 100%;
-		}
-		
-		table.ident td.tl {
-			width: 30%;
-		}
-		table.ident td.ts {
-			_padding-left: 30%;
-			background-color: #e8e8ff;
-		}
-		table.ident td.big {
-			font-size: 20px;
-			font-weight: bold;
-		}
-		table.aktywa {
-			float: left;
-			width: 55%;
-		}
-		table.pasywa {
-			float: left;
-			width: 45%;
-		}
-		.ar {
-			text-align: right;
-			font-size: 10px;
-		}
-		table.bilans td.kwoty.ar {
-			font-size: 10px;
-			width: 70px !important;		
-		}
-		th.ar {
-			text-align: right;
-			font-size: 10px;
-			padding: 5px 2px;
-		}
-		tr.sumbil td {
-			font-weight: bold;
-			text-transform: uppercase;
-			font-size: 10px !important;
-			padding: 5px 2px;
-		}
-		.content-block, p {
-    		page-break-inside: avoid;
-  		}
-  		hr {
-  			border-top: 1px solid #d0d0d0;
-  		}
-  		.wsnw {
-  			white-space: nowrap;
-  			text-align: center;
-  		}
-		td.pp {
-			white-space: nowrap;
-		}
-  		tr.rh {
-  			background-color: #e8e8ff;
-  		}
-  		tr:hover {
-  			background-color: #e0e0e0;
-  		}
-		td.kwoty {
-		    width: 115px;
-		}
-		table.raport td.kwoty {
-			font-size: 12px;
-		}
-		table.raport td.bilans {
-			font-size: 10px;
-		}
-		table.raport.bilans td.kwotyp {
-			min-width: 90px;
-			max-width: 115px;
-		}
-		table.raport.podatek td.kwotyp {
-			min-width: 85px;
-		}
-		table.raport td.tekst.klu0 {
-		    padding-left: 5px;
-		}		
-		table.raport td.tekst.klu10 {
-		    padding-left: 20px;
-		}
-		table.raport td.tekst.klu20 {
-		    padding-left: 30px;
-		}
-		table.raport td.tekst.klu30 {
-		    padding-left: 40px;
-		}
-		table.raport td.tekst.klu40 {
-		    padding-left: 50px;
-		}
-		table.raport td.tekst.klu50 {
-		    padding-left: 60px;
-		}
-		table.raport td.tekst.klu60 {
-		    padding-left: 90px;
-		}
-		
-		table.raport.bilans td.tekst.klu0 {
-		    padding-left: 0px;
-		}	
-		table.raport.bilans td.tekst.klu10 {
-		    padding-left: 2px;
-		}
-		table.raport.bilans td.tekst.klu20 {
-		    padding-left: 6px;
-		}
-		table.raport.bilans td.tekst.klu30 {
-		    padding-left: 10px;
-		}
-		table.raport.bilans td.tekst.klu40 {
-		    padding-left: 14px;
-		}
-		table.raport.bilans td.tekst.klu50 {
-		    padding-left: 18px;
-		}
-		table.raport.bilans td.tekst.klu60 {
-		    padding-left: 22px;
-		}
-
-		.wyrUBS {
-			text-transform: uppercase;
-    		font-weight: bold;
-    		height: 30px;
-    		vertical-align: middle;
-    		background-color: #f0f0f0;
-    	}
-		.wyrUB {
-    		text-transform: uppercase;
-    		font-weight: bold;
-		}
-    	.wyrB {
-    		font-weight: bold;
-    	}
-    	.wyrU {
-    		text-transform: uppercase;
-		}
-    	@media print {
-    		table.raport th, table.raport td {
-    			line-height: 8px;
-    		}
-    		.wyrUBS {
-    	    	height: 20px;
-    			background-color: #e0e0e0;
-    		}
-    		table.raport.bilans tr.wyrUBS {
-    	    	height: 10px;
-    			background-color: #e0e0e0;
-    		}    		
-    		table.raport tr.wyrUBS th, table.raport tr.wyrUBS td {
-    			line-height: 10px;
-    		} 
-    	}
-    	
-    	div.phe {
-	    	margin: 0 auto;
-	    	text-align: center;
-	    	font-size: 12px;
-	    	padding-top: 0;
-	    	margin-bottom: 20px;
-	    	border-bottom: 1px solid #d0d0d0;
-	    }
-	    
-    	@media print {
-    		div.phe {
-    			display: none;
-    		}
-    	}
-    		 
-   		.ujemna {
-   			color: red;
-   		}
-	</style>
+	<link rel="stylesheet" type="text/css" href="style.css" />
 </head>
 
 <body>
@@ -778,12 +419,12 @@
 				<div class="cen">za okres<br/><xsl:value-of select="//dtsf:OkresOd"/> - <xsl:value-of select="//dtsf:OkresDo"/></div>
 				<div class="cen"><br/><small>data sporządzenia<br/><xsl:value-of select="//dtsf:DataSporzadzenia"/></small></div>
 			</section>
-			<xsl:apply-templates select="tns:JednostkaInna"/>
+			<xsl:apply-templates select="tns:JednostkaMala"/>
 		</xsl:when>
 		<xsl:otherwise>
 			<xsl:message>Root: <xsl:value-of select="$root"/></xsl:message>
 			<div class="phe"><xsl:value-of select="//dtsf:NazwaFirmy"/> - Sprawozdanie Finansowe za <xsl:value-of select="substring(//dtsf:DataOd, 1, 4)"/></div>
-			<xsl:apply-templates select="tns:JednostkaInna/*[local-name() = $root]"/>			
+			<xsl:apply-templates select="tns:JednostkaMala/*[local-name() = $root]"/>			
 		</xsl:otherwise>
 	</xsl:choose>
 	
@@ -793,28 +434,31 @@
 
 </xsl:template>
 
-<xsl:template match="tns:JednostkaInna">
-	<xsl:apply-templates select="tns:WprowadzenieDoSprawozdaniaFinansowego"/>
-	<xsl:apply-templates select="tns:Bilans"/>
-	<xsl:apply-templates select="tns:RZiS"/>
-	<xsl:apply-templates select="tns:ZestZmianWKapitale"/>
-	<xsl:apply-templates select="tns:RachPrzeplywow"/>
-	<xsl:apply-templates select="tns:DodatkoweInformacjeIObjasnieniaJednstkaInna"/>
+<xsl:template match="tns:JednostkaMala">
+	<xsl:apply-templates select="tns:WprowadzenieDoSprawozdaniaFinansowegoJednostkaMala"/>
+	<xsl:apply-templates select="tns:BilansJednostkaMala"/>
+	<xsl:apply-templates select="tns:BilansJednostkaInna"/>
+	<xsl:apply-templates select="tns:RZiSJednostkaMala"/>
+	<xsl:apply-templates select="tns:RZiSJednostkaInna"/>
+	<xsl:apply-templates select="tns:ZestZmianWKapitaleJednostkaInna"/>
+	<xsl:apply-templates select="tns:RachPrzeplywowJednostkaInna"/>
+	<xsl:apply-templates select="tns:DodatkoweInformacjeIObjasnieniaJednostkaMala"/>
+	<xsl:apply-templates select="tns:DodatkoweInformacjeIObjasnieniaJednostkaInna"/>
 </xsl:template>
 
-<xsl:template match="tns:WprowadzenieDoSprawozdaniaFinansowego">
+<xsl:template match="tns:WprowadzenieDoSprawozdaniaFinansowegoJednostkaMala">
 	<section>
 		<div class="tyt">Wprowadzenie do sprawozdania</div>
 		<xsl:apply-templates select="tns:P_1"/>
 		<xsl:apply-templates select="tns:P_3"/>
 		<xsl:apply-templates select="tns:P_4"/>
 		<xsl:apply-templates select="tns:P_5"/>
-		<xsl:apply-templates select="tns:P_7"/>
+		<xsl:apply-templates select="tns:P_6"/>
 		
 		<div class="wpr">
-			<h1>8. Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</h1>
+			<h1>7. Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</h1>
 		
-			<xsl:apply-templates select="tns:P_8"/>
+			<xsl:apply-templates select="tns:P_7"/>
 		</div>
 	</section>	
 </xsl:template>
@@ -863,20 +507,7 @@
 </xsl:template>
 
 <xsl:template match="tns:P_1C">
-	<tr><td class="ts" colspan="2"><b>Podstawowy przedmiot działalności jednostki</b></td></tr>
-	<tr>
-		<td>KodPKD</td>
-		<td>
-			<xsl:for-each select="dtsf:KodPKD">
-				<xsl:if test="position() > 1"><br/></xsl:if>
-				<xsl:apply-templates/> - <xsl:call-template name="nazwa-pkd"/>
-			</xsl:for-each>
-		</td>
-	</tr>
-</xsl:template>
-	
-<xsl:template match="tns:P_1D">
-	<tr><td class="ts" colspan="2"><b>Identyfikator podmiotu składającego sprawozdanie finansowe</b></td></tr>
+	<tr><td class="ts" colspan="2"><b>Numer we własciwym rejestrze sądowym albo ewidencji</b></td></tr>
 	<xsl:apply-templates select="dtsf:NIP"/>
 	<xsl:apply-templates select="dtsf:KRS"/>
 </xsl:template>
@@ -903,19 +534,8 @@
 
 <xsl:template match="tns:P_4">
 	<div class="wpr">
-		<h1>4. Dane łączne</h1>
-		<div>Wskazanie, że sprawozdanie finansowe zawiera dane łączne, jeżeli w skład jednostki wchodzą wewnętrzne jednostki organizacyjne sporządzające samodzielne sprawozdania finansowe:</div>
-		<br/>
-		<b>
-		<xsl:choose>
-			<xsl:when test="text() = 'true'">
-				Sprawozdanie finansowe zawiera dane łączne.
-			</xsl:when>
-			<xsl:when test="text() = 'false'">
-				Sprawozdanie nie zawiera danych łącznych.
-			</xsl:when>
-		</xsl:choose>
-		</b>
+		<h1>4. Wskazanie zastosowanych uproszczeń przewidzianych dla jednostek małych</h1>
+		<xsl:apply-templates/>
 	</div>
 </xsl:template>
 
@@ -951,34 +571,27 @@
 
 
 
-<xsl:template match="tns:P_7">
+<xsl:template match="tns:P_6">
 	<div class="wpr">
-		<h1>7. Zasady (polityka) rachunkowości</h1>
+		<h1>6. Zasady (polityka) rachunkowości</h1>
 	
 		<div class="wpr2">
 			<h2>A. Omówienie przyjętych zasad (polityki) rachunkowości, w zakresie w jakim ustawa pozostawia jednostce prawo wyboru, w tym:</h2>
-			<xsl:for-each select="tns:P_7A">
+			<xsl:for-each select="tns:P_6A">
 				<xsl:call-template name="print-paras"/>
 			</xsl:for-each>
 		</div>
 		
 		<div class="wpr2">
-			<h2>B. Omówienie metod wyceny aktywów i pasywów (także amortyzacji):</h2>
-			<xsl:for-each select="tns:P_7B">
+			<h2>B. metod wyceny aktywów i pasywów (także amortyzacji):</h2>
+			<xsl:for-each select="tns:P_6B">
 				<xsl:call-template name="print-paras"/>
 			</xsl:for-each>
 		</div>
 		
 		<div class="wpr2">
-			<h2>C. Omówienie zasad ustalenia wyniku finansowego:</h2>
-			<xsl:for-each select="tns:P_7C">
-				<xsl:call-template name="print-paras"/>
-			</xsl:for-each>
-		</div>
-		
-		<div class="wpr2">
-			<h2>D. Sposób sporządzenia sprawozdania finansowego:</h2>
-			<xsl:for-each select="tns:P_7D">
+			<h2>C. ustalenia wyniku finansowego oraz sposobu sporządzenia sprawozdania finansowego:</h2>
+			<xsl:for-each select="tns:P_6C">
 				<xsl:call-template name="print-paras"/>
 			</xsl:for-each>
 		</div>
@@ -987,7 +600,7 @@
 
 
 
-<xsl:template match="tns:P_8">
+<xsl:template match="tns:P_7">
 	<div>
 		<h1><xsl:value-of select="dtsf:NazwaPozycji"/></h1>
 	
@@ -999,13 +612,101 @@
 
 
 
-<xsl:template match="tns:Bilans">
+<xsl:template match="tns:BilansJednostkaMala">
+	<section class="pbb bil">
+		<div class="tyt">Bilans</div>
+			<xsl:apply-templates select="jma:Aktywa"/>
+			<xsl:apply-templates select="jma:Pasywa"/>
+	</section>	
+</xsl:template>
+
+<xsl:template match="tns:BilansJednostkaInna">
 	<section class="pbb bil">
 		<div class="tyt">Bilans</div>
 			<xsl:apply-templates select="jin:Aktywa"/>
 			<xsl:apply-templates select="jin:Pasywa"/>
 	</section>	
 </xsl:template>
+
+<xsl:template match="jma:Aktywa">
+	<table cellspacing="0" cellpadding="0" class="raport bilans mala aktywa">
+		<thead>
+			<tr class="rh">
+				<th class="al">Lp</th>
+				<th>A K T Y W A</th>
+				<th class="ar">Bieżący okres</th>
+				<th class="ar end">Poprzedni okres</th>
+			</tr>
+		</thead>
+		<tbody>
+
+			<xsl:apply-templates select="jma:*">
+				<xsl:with-param name="raport" select="'Aktywa'"/>
+				<xsl:with-param name="schemat" select="'JednostkaMalaStrukturyDanychSprFin_v1-0.xsd'"/>
+			</xsl:apply-templates>
+
+			<tr class="sumbil">
+				<td>
+				</td>
+				<td class="test">
+					<xsl:call-template name="nazwa-pozycji">
+						<xsl:with-param name="raport" select="'Aktywa'"/>
+						<xsl:with-param name="schemat" select="'JednostkaMalaStrukturyDanychSprFin_v1-0.xsd'"/>
+					</xsl:call-template>
+				</td>
+				<td class="ar">
+					<xsl:call-template name="tkwotowy">
+						<xsl:with-param name="kwota" select="./dtsf:KwotaA"/>
+					</xsl:call-template>				
+				</td>
+				<td class="ar">
+					<xsl:call-template name="tkwotowy">
+						<xsl:with-param name="kwota" select="./dtsf:KwotaB"/>
+					</xsl:call-template>				
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</xsl:template>
+
+<xsl:template match="jma:Pasywa">
+	<table cellspacing="0" cellpadding="0" class="raport bilans mala pasywa">
+		<thead>
+			<tr class="rh">
+				<th class="al">Lp</th>
+				<th>P A S Y W A</th>
+				<th class="ar">Bieżący okres</th>
+				<th class="ar end">Poprzedni okres</th>
+			</tr>
+		</thead>
+		<tbody>
+			<xsl:apply-templates select="jma:*">
+				<xsl:with-param name="raport" select="'Pasywa'"/>
+			</xsl:apply-templates>
+			<tr class="sumbil">
+				<td>
+				</td>
+				<td>
+					<xsl:call-template name="nazwa-pozycji">
+						<xsl:with-param name="raport" select="'Pasywa'"/>
+						<xsl:with-param name="schemat" select="'JednostkaMalaStrukturyDanychSprFin_v1-0.xsd'"/>
+					</xsl:call-template>
+				</td>
+				<td class="ar">
+					<xsl:call-template name="tkwotowy">
+						<xsl:with-param name="kwota" select="./dtsf:KwotaA"/>
+					</xsl:call-template>				
+				</td>
+				<td class="ar">
+					<xsl:call-template name="tkwotowy">
+						<xsl:with-param name="kwota" select="./dtsf:KwotaB"/>
+					</xsl:call-template>				
+				</td>	
+			</tr>
+		</tbody>
+	</table>
+</xsl:template>
+
 
 <xsl:template match="jin:Aktywa">
 	<table cellspacing="0" cellpadding="0" class="raport bilans aktywa">
@@ -1029,6 +730,7 @@
 				<td class="test">
 					<xsl:call-template name="nazwa-pozycji">
 						<xsl:with-param name="raport" select="'Aktywa'"/>
+						<xsl:with-param name="schemat" select="'JednostkaInnaStrukturyDanychSprFin_v1-0.xsd'"/>
 					</xsl:call-template>
 				</td>
 				<td class="ar">
@@ -1066,6 +768,7 @@
 				<td>
 					<xsl:call-template name="nazwa-pozycji">
 						<xsl:with-param name="raport" select="'Pasywa'"/>
+						<xsl:with-param name="schemat" select="'JednostkaInnaStrukturyDanychSprFin_v1-0.xsd'"/>
 					</xsl:call-template>
 				</td>
 				<td class="ar">
@@ -1081,6 +784,131 @@
 			</tr>
 		</tbody>
 	</table>
+</xsl:template>
+
+<xsl:template match="jma:*">
+	<xsl:param name="raport"/>
+	
+    <xsl:variable name="klu">
+		<xsl:call-template name="klu-pozycji">
+			<xsl:with-param name="raport" select="$raport"/>
+		</xsl:call-template>
+    </xsl:variable>
+    
+    <xsl:variable name="wyr">
+		<xsl:call-template name="wyr-pozycji">
+			<xsl:with-param name="raport" select="$raport"/>
+		</xsl:call-template>
+    </xsl:variable>
+        
+    <xsl:variable name="nazwa">
+		<xsl:call-template name="nazwa-pozycji">
+			<xsl:with-param name="raport" select="$raport"/>
+			<xsl:with-param name="schemat" select="'JednostkaMalaStrukturyDanychSprFin_v1-0.xsd'"/>
+		</xsl:call-template>    
+    </xsl:variable>
+    
+    <xsl:variable name="kwotaa">
+		<xsl:choose>
+			<xsl:when test="substring-before(substring-after(name(.), ':'), '_') = 'PozycjaUszczegolawiajaca'">
+				<xsl:value-of select="./dtsf:KwotyPozycji/dtsf:KwotaA"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="./dtsf:KwotaA"/>
+			</xsl:otherwise>
+		</xsl:choose>    
+    </xsl:variable>
+    
+    <xsl:variable name="kwotab">
+		<xsl:choose>
+			<xsl:when test="substring-before(substring-after(name(.), ':'), '_') = 'PozycjaUszczegolawiajaca'">
+				<xsl:value-of select="./dtsf:KwotyPozycji/dtsf:KwotaB"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="./dtsf:KwotaB"/>
+			</xsl:otherwise>
+		</xsl:choose>   
+    </xsl:variable>
+
+    <xsl:variable name="ujemnaa">
+		<xsl:choose>
+			<xsl:when test="$kwotaa &lt; 0">
+				<xsl:value-of select="'ujemna'"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="'dodatnia'"/>
+			</xsl:otherwise>
+		</xsl:choose>    
+    </xsl:variable>
+       
+    <xsl:variable name="ujemnab">
+		<xsl:choose>
+			<xsl:when test="$kwotab &lt; 0">
+				<xsl:value-of select="'ujemna'"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="'dodatnia'"/>
+			</xsl:otherwise>
+		</xsl:choose>    
+    </xsl:variable>
+     
+    <xsl:variable name="empty">
+    	<xsl:choose>
+    		<xsl:when test="format-number($kwotaa, '#.##0,00', 'pln') = '0,00' and format-number($kwotab, '#.##0,00', 'pln') = '0,00'">
+    			<xsl:value-of select="'empty'"/>
+    		</xsl:when>
+    		<xsl:otherwise>
+    			<xsl:value-of select="''"/>
+    		</xsl:otherwise>
+    	</xsl:choose>
+    </xsl:variable>
+    
+	<tr class="{$wyr} {$empty}">
+		<td class="wsnw">
+			<xsl:call-template name="after-last">
+                <xsl:with-param name="str">
+					<xsl:call-template name="element"/>
+               	</xsl:with-param>
+                <xsl:with-param name="find" select="'_'"/>
+                <xsl:with-param name="poziom" select="0"/>
+                <xsl:with-param name="nazwa" select="$nazwa"/>
+			</xsl:call-template>
+		</td>
+		<td class="tekst klu{$klu}">
+			<xsl:value-of select="$nazwa"/>
+		</td>
+		<td class="kwoty ar {$ujemnaa}">
+			<xsl:call-template name="tkwotowy">
+				<xsl:with-param name="kwota">
+					<xsl:choose>
+						<xsl:when test="substring-before(substring-after(name(.), ':'), '_') = 'PozycjaUszczegolawiajaca'">
+							<xsl:value-of select="./dtsf:KwotyPozycji/dtsf:KwotaA"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="./dtsf:KwotaA"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:with-param>
+			</xsl:call-template>
+		</td>
+		<td class="kwoty ar {$ujemnab}">
+			<xsl:call-template name="tkwotowy">
+				<xsl:with-param name="kwota">
+					<xsl:choose>
+						<xsl:when test="substring-before(substring-after(name(.), ':'), '_') = 'PozycjaUszczegolawiajaca'">
+							<xsl:value-of select="./dtsf:KwotyPozycji/dtsf:KwotaB"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="./dtsf:KwotaB"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:with-param>
+			</xsl:call-template>
+		</td>
+	</tr>
+	<xsl:apply-templates select="jma:*">
+		<xsl:with-param name="raport" select="$raport"/>
+	</xsl:apply-templates>
 </xsl:template>
 
 <xsl:template match="jin:*">
@@ -1101,6 +929,7 @@
     <xsl:variable name="nazwa">
 		<xsl:call-template name="nazwa-pozycji">
 			<xsl:with-param name="raport" select="$raport"/>
+			<xsl:with-param name="schemat" select="'JednostkaInnaStrukturyDanychSprFin_v1-0.xsd'"/>
 		</xsl:call-template>    
     </xsl:variable>
     
@@ -1208,11 +1037,64 @@
 </xsl:template>
 
 
-<xsl:template match="tns:RZiS">
+<xsl:template match="tns:RZiSJednostkaMala">
+	<section class="pbb">
+		<xsl:apply-templates select="jma:RZiSKalk"/>
+		<xsl:apply-templates select="jma:RZiSPor"/>
+	</section>
+</xsl:template>
+
+<xsl:template match="tns:RZiSJednostkaInna">
 	<section class="pbb">
 		<xsl:apply-templates select="jin:RZiSKalk"/>
 		<xsl:apply-templates select="jin:RZiSPor"/>
 	</section>
+</xsl:template>
+
+<xsl:template match="jma:RZiSPor">
+	<div class="tyt">
+		Rachunek zysków i strat<br/>
+		<span class="pod">Wersja porównawcza</span>
+	</div>
+	<table cellspacing="0" cellpadding="0" class="rzis raport">
+		<thead>
+			<tr class="rh">
+				<th class="al">Lp</th>
+				<th>Treść / wyszczególnienie</th>
+				<th class="ar">Bieżący okres</th>
+				<th class="ar end">Poprzedni okres</th>
+			</tr>
+		</thead>
+		<tbody>
+			<xsl:apply-templates select="jma:*">
+				<xsl:with-param name="raport" select="'RZiSPor'"/>
+				<xsl:with-param name="schemat" select="'JednostkaMalaStrukturyDanychSprFin_v1-0.xsd'"/>			
+			</xsl:apply-templates>
+		</tbody>
+	</table>	
+</xsl:template>
+
+<xsl:template match="jma:RZiSKalk">
+	<div class="tyt">
+		Rachunek zysków i strat<br/>
+		<span class="pod">Wersja kalkulacyjna</span>
+	</div>
+	<table cellspacing="0" cellpadding="0" class="rzis raport">
+		<thead>
+			<tr class="rh">
+				<th class="al">Lp</th>
+				<th>Treść / wyszczególnienie</th>
+				<th class="ar">Bieżący okres</th>
+				<th class="ar end">Poprzedni okres</th>
+			</tr>
+		</thead>
+		<tbody>
+			<xsl:apply-templates select="jma:*">
+				<xsl:with-param name="raport" select="'RZiSKalk'"/>
+				<xsl:with-param name="schemat" select="'JednostkaMalaStrukturyDanychSprFin_v1-0.xsd'"/>		
+			</xsl:apply-templates>	
+		</tbody>
+	</table>	
 </xsl:template>
 
 <xsl:template match="jin:RZiSPor">
@@ -1231,7 +1113,8 @@
 		</thead>
 		<tbody>
 			<xsl:apply-templates select="jin:*">
-				<xsl:with-param name="raport" select="'RZiSPor'"/>				
+				<xsl:with-param name="raport" select="'RZiSPor'"/>
+				<xsl:with-param name="schemat" select="'JednostkaInnaStrukturyDanychSprFin_v1-0.xsd'"/>			
 			</xsl:apply-templates>
 		</tbody>
 	</table>	
@@ -1253,13 +1136,14 @@
 		</thead>
 		<tbody>
 			<xsl:apply-templates select="jin:*">
-				<xsl:with-param name="raport" select="'RZiSKalk'"/>			
+				<xsl:with-param name="raport" select="'RZiSKalk'"/>
+				<xsl:with-param name="schemat" select="'JednostkaInnaStrukturyDanychSprFin_v1-0.xsd'"/>	
 			</xsl:apply-templates>	
 		</tbody>
 	</table>	
 </xsl:template>
 
-<xsl:template match="tns:ZestZmianWKapitale">
+<xsl:template match="tns:ZestZmianWKapitaleJednostkaInna">
 	<section class="pbb">
 		<div class="tyt">
 			Zestawienie zmian w kapitale (funduszu) własnym
@@ -1276,7 +1160,8 @@
 		</thead>
 		<tbody>
 			<xsl:apply-templates select="jin:*">
-				<xsl:with-param name="raport" select="'ZestZmianWKapitaleJednostkaInna'"/>			
+				<xsl:with-param name="raport" select="'ZestZmianWKapitaleJednostkaInna'"/>
+				<xsl:with-param name="schemat" select="'JednostkaInnaStrukturyDanychSprFin_v1-0.xsd'"/>		
 			</xsl:apply-templates>	
 		</tbody>
 	</table>
@@ -1284,7 +1169,7 @@
 </xsl:template>
 
 
-<xsl:template match="tns:RachPrzeplywow">
+<xsl:template match="tns:RachPrzeplywowJednostkaInna">
 	<section class="pbb">
 		<xsl:apply-templates select="jin:PrzeplywyPosr"/>
 		<xsl:apply-templates select="jin:PrzeplywyBezp"/>
@@ -1307,7 +1192,8 @@
 		</thead>
 		<tbody>
 			<xsl:apply-templates select="jin:*">
-				<xsl:with-param name="raport" select="'PrzeplywyPosr'"/>			
+				<xsl:with-param name="raport" select="'PrzeplywyPosr'"/>
+				<xsl:with-param name="schemat" select="'JednostkaInnaStrukturyDanychSprFin_v1-0.xsd'"/>			
 			</xsl:apply-templates>	
 		</tbody>
 	</table>	
@@ -1329,7 +1215,8 @@
 		</thead>
 		<tbody>
 			<xsl:apply-templates select="jin:*">
-				<xsl:with-param name="raport" select="'PrzeplywyBezp'"/>			
+				<xsl:with-param name="raport" select="'PrzeplywyBezp'"/>
+				<xsl:with-param name="schemat" select="'JednostkaInnaStrukturyDanychSprFin_v1-0.xsd'"/>
 			</xsl:apply-templates>	
 		</tbody>
 	</table>	
@@ -1337,7 +1224,7 @@
 
 
 
-<xsl:template match="tns:DodatkoweInformacjeIObjasnieniaJednstkaInna">
+<xsl:template match="tns:DodatkoweInformacjeIObjasnieniaJednostkaInna">
 	<section class="pbb">
 		<div class="tyt">Dodatkowe informacje i objaśnienia</div>
 		
@@ -1376,6 +1263,47 @@
 		</div>			
 	</section>	
 </xsl:template>
+
+<xsl:template match="tns:DodatkoweInformacjeIObjasnieniaJednostkaMala">
+	<section class="pbb">
+		<div class="tyt">Dodatkowe informacje i objaśnienia</div>
+		
+		<xsl:apply-templates select="tns:InformacjaDodatkowaDotyczacaPodatkuDochodowego"/>
+		
+		<div class="sek">
+			<div class="tyt2">Załączniki do sprawozdania</div>
+			<table cellspacing="0" cellpadding="0">
+			<thead>
+				<tr class="rh"><th>Opis</th><th>Nazwa pliku</th></tr>
+			</thead>
+			<tbody>
+			<xsl:for-each select="tns:DodatkoweInformacjeIObjasnienia">
+				<xsl:variable name="plik_id" select="dtsf:Plik/comment()"/>
+				<xsl:variable name="zawartosc" select="dtsf:Plik/dtsf:Zawartosc"/>
+				<xsl:variable name="nazwa" select="dtsf:Plik/dtsf:Nazwa"/>
+				<tr>
+					<td>
+						<xsl:call-template name="print-paras">
+							<xsl:with-param name="text" select="dtsf:Opis"/>
+						</xsl:call-template>
+					</td>
+					<td><a class="lnk" href="{'data:application/octet-stream;base64,'}{$zawartosc}" download="{$nazwa}">
+							<xsl:call-template name="replace-str">
+								<xsl:with-param name="str" select="dtsf:Plik/dtsf:Nazwa" />
+								<xsl:with-param name="find" select="'_'" />
+								<xsl:with-param name="replace" select="' '" />
+							</xsl:call-template>
+							<!-- xsl:value-of select="dtsf:Plik/dtsf:Nazwa"/-->
+						</a>
+					</td>
+				</tr>
+			</xsl:for-each>
+			</tbody>
+			</table>
+		</div>			
+	</section>	
+</xsl:template>
+
 
 <xsl:template match="tns:InformacjaDodatkowaDotyczacaPodatkuDochodowego">
 	<xsl:variable name="kapitalowe" select=".//dtsf:KwotaB"/>
@@ -1642,7 +1570,7 @@
 	<xsd:simpleType name="RZiSPor">
 		<xsd:enumeration value="0">UBS</xsd:enumeration>
 	</xsd:simpleType>
-	<xsd:simpleType name="ZestZmianWKapitaleJednostkaInna">
+	<xsd:simpleType name="ZestZmianWKapitaleJednostkaMala">
 		<xsd:enumeration value="0">UBS</xsd:enumeration>
 		<xsd:enumeration value="1">B</xsd:enumeration>
 	</xsd:simpleType>
