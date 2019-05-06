@@ -294,11 +294,18 @@
 <xsl:template name="dodatkoweInformacjeIObjasnienia">
 	<xsl:param name="pozycje"/>
 	
+	<xsl:variable name="pliki" select="count(//dtsf:Plik)"/>
+
 	<div class="sek">
 		<div class="tyt2">Dodatkowe informacje i objaśnienia</div>
 		<table cellspacing="0" cellpadding="0">
 		<thead>
-			<tr class="rh"><th>Opis</th><th>Nazwa pliku</th></tr>
+			<tr class="rh">
+				<th>Opis</th>
+				<xsl:if test="$pliki">
+				<th>Nazwa pliku</th>
+				</xsl:if>
+			</tr>
 		</thead>
 		<tbody>
 		<xsl:for-each select="$pozycje">
@@ -311,15 +318,16 @@
 						<xsl:with-param name="text" select="dtsf:Opis"/>
 					</xsl:call-template>
 				</td>
+				<xsl:if test="$pliki">
 				<td><a class="lnk" href="{'data:application/octet-stream;base64,'}{$zawartosc}" download="{$nazwa}">
 						<xsl:call-template name="replace-str">
-							<xsl:with-param name="str" select="dtsf:Plik/dtsf:Nazwa" />
+							<xsl:with-param name="str" select="$nazwa" />
 							<xsl:with-param name="find" select="'_'" />
 							<xsl:with-param name="replace" select="' '" />
 						</xsl:call-template>
-						<!-- xsl:value-of select="dtsf:Plik/dtsf:Nazwa"/-->
 					</a>
 				</td>
+				</xsl:if>
 			</tr>
 		</xsl:for-each>
 		</tbody>
