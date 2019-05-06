@@ -102,30 +102,9 @@
 	<xsl:apply-templates select="dtsf:Siedziba"/>
 </xsl:template>
 
-<xsl:template match="dtsf:Siedziba">	
-	<tr><td class="ts" colspan="2"><b>Siedziba</b></td></tr>
-	
-	<tr><td class="tl">Województwo</td><td><xsl:value-of select="dtsf:Wojewodztwo"/></td></tr>
-	<tr><td class="tl">Powiat</td><td><xsl:value-of select="dtsf:Powiat"/></td></tr>
-	<tr><td class="tl">Gmina</td><td><xsl:value-of select="dtsf:Gmina"/></td></tr>
-	<tr><td class="tl">Miejscowość</td><td><xsl:value-of select="dtsf:Miejscowosc"/></td></tr>
-</xsl:template>
-		
 <xsl:template match="tns:P_1B">
 	<tr><td class="ts" colspan="2"><b>Adres</b></td></tr>
 	<xsl:apply-templates select="dtsf:Adres"/>
-</xsl:template>
-
-<xsl:template match="dtsf:Adres">
-	<tr><td>Kod kraju</td><td><xsl:value-of select="etd:KodKraju"/></td></tr>
-	<tr><td>Województwo</td><td><xsl:value-of select="etd:Wojewodztwo"/></td></tr>
-	<tr><td>Powiat</td><td><xsl:value-of select="etd:Powiat"/></td></tr>
-	<tr><td>Gmina</td><td><xsl:value-of select="etd:Gmina"/></td></tr>
-	<tr><td>Ulica</td><td><xsl:value-of select="etd:Ulica"/></td></tr>
-	<tr><td>Nr domu</td><td><xsl:value-of select="etd:NrDomu"/></td></tr>
-	<tr><td>Miejscowość</td><td><xsl:value-of select="etd:Miejscowosc"/></td></tr>
-	<tr><td>Kod pocztowy</td><td><xsl:value-of select="etd:KodPocztowy"/></td></tr>
-	<tr><td>Poczta</td><td><xsl:value-of select="etd:Poczta"/></td></tr>
 </xsl:template>
 
 <xsl:template match="tns:P_1C">
@@ -134,14 +113,6 @@
 	<xsl:apply-templates select="dtsf:KRS"/>
 </xsl:template>
 	
-<xsl:template match="dtsf:NIP">
-	<tr><td>NIP</td><td><xsl:apply-templates/></td></tr>
-</xsl:template>
-
-<xsl:template match="dtsf:KRS">
-	<tr><td>Nr KRS</td><td><xsl:apply-templates/></td></tr>
-</xsl:template>
-
 <xsl:template match="tns:P_3">
 	<div class="wpr">
 		<h1>3. Wskazanie okresu objętego sprawozdaniem finansowym</h1>
