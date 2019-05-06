@@ -152,10 +152,12 @@ const handleFileSelect2= (evt) => {
 <body>
 <div id="loader" class="pg">
 	<h1 class="pg">Wizualizacja pliku XML sprawozdania finansowego</h1>
-	<p>Wybierz plik XML ze sprawozdaniem finansowym (typu <b>Jednostka Inna|Mała|Mikro</b>)</p>
-	<form id="form" action="/xml" method="POST" enctype="multipart/form-data">
+	
+	<form id="form" action="/xml" method="POST" enctype="multipart/form-data" target="_blank">
+		<p>Wybierz plik XML ze sprawozdaniem finansowym (typu <b>Jednostka Inna|Mała|Mikro</b>)</p>
 		<input type="file" id="file2" name="file2"/>
 	</form>
+	
 	<div class="pg obraz"></div>
 	<div class="pg info">
 		Źródło: <a class="pg" href="https://github.com/wlodekf/sprawozdania">https://github.com/wlodekf/sprawozdania</a>
