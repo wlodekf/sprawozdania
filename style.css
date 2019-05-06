@@ -148,6 +148,12 @@ table.raport.bilans th, table.raport.bilans td {
 	padding: 2px 2px;
 }
 
+table.raport.bilans.krotki th, table.raport.bilans.krotki td
+{		
+	line-height: 12px;
+	padding: 3px 2px;
+}
+	
 table.raport tr.empty td {
 	line-height: 8px;
 	padding: 1px 2px;
@@ -175,16 +181,32 @@ table.raport tr.sumbil td {
 	}
 
 	table.raport.bilans.mala th, table.raport.bilans.mala td,
-	table.raport.bilans.mikro th, table.raport.bilans.mikro td {		
-		line-height: 15px;
+	table.raport.bilans.mikro th, table.raport.bilans.mikro td,
+	table.raport.bilans.krotki th, table.raport.bilans.krotki td
+	{		
+		line-height: 12px;
 		padding: 3px 2px;
 	}
 
+	table.raport.bilans.bardzo th, table.raport.bilans.bardzo td
+	{		
+		line-height: 12px;
+		padding: 10px 2px;
+	}
+	
 	table.raport.bilans tr.empty td {
 		line-height: 6px;
 		padding: 1px 2px;
 	}
 
+	table.raport.bilans.mala tr.empty td,
+	table.raport.bilans.mikro tr.empty td,
+	table.raport.bilans.krotki tr.empty td,
+	table.raport.bilans.bardzo tr.empty td {
+		line-height: 8px;
+		padding: 2px 2px;
+	}
+	
 	table.raport tr.sumbil td {
 		padding: 2px;
 	}

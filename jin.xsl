@@ -8,6 +8,17 @@
 
 <xsl:variable name="jin-nazwy" select="document('JednostkaInnaStrukturyDanychSprFin_v1-0.xsd')"/>
 
+<xsl:variable name="krotki">
+	<xsl:choose>
+		<xsl:when test="count(//jin:Aktywa//dtsf:KwotaA) &lt; 50">
+			<xsl:value-of select="'krotki'"/>
+		</xsl:when>
+		<xsl:otherwise>
+			<xsl:value-of select="''"/>
+		</xsl:otherwise>
+	</xsl:choose>
+</xsl:variable>
+	
 <xsl:template match="tns:WprowadzenieDoSprawozdaniaFinansowegoJednostkaInna">
 	<section>
 		<div class="tyt">Wprowadzenie do sprawozdania</div>
@@ -43,7 +54,7 @@
 </xsl:template>
 
 <xsl:template match="jin:Aktywa">
-	<table cellspacing="0" cellpadding="0" class="raport bilans aktywa">
+	<table cellspacing="0" cellpadding="0" class="raport bilans {$krotki} aktywa">
 		<thead>
 			<tr class="rh">
 				<th class="al">Lp</th>
@@ -83,7 +94,7 @@
 </xsl:template>
 
 <xsl:template match="jin:Pasywa">
-	<table cellspacing="0" cellpadding="0" class="raport bilans pasywa">
+	<table cellspacing="0" cellpadding="0" class="raport bilans {$krotki} pasywa">
 		<thead>
 			<tr class="rh">
 				<th class="al">Lp</th>

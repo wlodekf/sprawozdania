@@ -8,8 +8,19 @@
 
 <xsl:variable name="jmi-nazwy" select="document('JednostkaMikroStrukturyDanychSprFin_v1-0.xsd')"/>
 
+<xsl:variable name="mikro">
+	<xsl:choose>
+		<xsl:when test="count(//jmi:Aktywa//dtsf:KwotaA) &lt; 10">
+			<xsl:value-of select="'bardzo'"/>
+		</xsl:when>
+		<xsl:otherwise>
+			<xsl:value-of select="'mikro'"/>
+		</xsl:otherwise>
+	</xsl:choose>
+</xsl:variable>
+
 <xsl:template match="jmi:Aktywa">
-	<table cellspacing="0" cellpadding="0" class="raport bilans mikro aktywa">
+	<table cellspacing="0" cellpadding="0" class="raport bilans {$mikro} aktywa">
 		<thead>
 			<tr class="rh">
 				<th class="al">Lp</th>
@@ -50,7 +61,7 @@
 </xsl:template>
 
 <xsl:template match="jmi:Pasywa">
-	<table cellspacing="0" cellpadding="0" class="raport bilans mikro pasywa">
+	<table cellspacing="0" cellpadding="0" class="raport bilans {$mikro} pasywa">
 		<thead>
 			<tr class="rh">
 				<th class="al">Lp</th>

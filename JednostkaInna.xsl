@@ -229,8 +229,8 @@
 <xsl:template match="tns:Bilans">
 	<section class="pbb bil">
 		<div class="tyt">Bilans</div>
-			<xsl:apply-templates select="jin:Aktywa"/>
-			<xsl:apply-templates select="jin:Pasywa"/>
+		<xsl:apply-templates select="jin:Aktywa"/>
+		<xsl:apply-templates select="jin:Pasywa"/>
 	</section>	
 </xsl:template>
 
