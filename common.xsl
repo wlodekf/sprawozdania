@@ -360,6 +360,9 @@
 	<xsd:simpleType name="RZiSPor">
 		<xsd:enumeration value="0">UBS</xsd:enumeration>
 	</xsd:simpleType>
+	<xsd:simpleType name="RZiSJednostkaOp">
+		<xsd:enumeration value="0">UBS</xsd:enumeration>
+	</xsd:simpleType>
 	<xsd:simpleType name="ZestZmianWKapitaleJednostkaInna">
 		<xsd:enumeration value="0">UBS</xsd:enumeration>
 		<xsd:enumeration value="1">B</xsd:enumeration>
