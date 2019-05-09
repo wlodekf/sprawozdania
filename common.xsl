@@ -66,6 +66,7 @@
 
 			<xsl:apply-templates select="$wiersze">
 				<xsl:with-param name="raport" select="'Aktywa'"/>
+				<xsl:with-param name="level" select="1"/>
 			</xsl:apply-templates>
 
 			<tr class="sumbil">
@@ -109,6 +110,7 @@
 		<tbody>
 			<xsl:apply-templates select="$wiersze">
 				<xsl:with-param name="raport" select="'Pasywa'"/>
+				<xsl:with-param name="level" select="1"/>
 			</xsl:apply-templates>
 			<tr class="sumbil">
 				<td>
@@ -138,16 +140,12 @@
 	<xsl:param name="raport"/>
 	<xsl:param name="nazwy"/>
 	<xsl:param name="podpoz"/>
+	<xsl:param name="level"/>
 	
-    <xsl:variable name="klu">
-		<xsl:call-template name="klu-pozycji">
-			<xsl:with-param name="raport" select="$raport"/>
-		</xsl:call-template>
-    </xsl:variable>
-    
     <xsl:variable name="wyr">
 		<xsl:call-template name="wyr-pozycji">
 			<xsl:with-param name="raport" select="$raport"/>
+			<xsl:with-param name="level" select="$level"/>
 		</xsl:call-template>
     </xsl:variable>
         
@@ -160,7 +158,7 @@
     
     <xsl:variable name="kwotaa">
 		<xsl:choose>
-			<xsl:when test="substring-before(substring-after(name(.), ':'), '_') = 'PozycjaUszczegolawiajaca'">
+			<xsl:when test="substring-before(substring-after(name(.), ':'), '_') = 'PozycjaUszczegolawiajaca' or substring-after(name(.), ':') = 'Podpozycja' or substring-after(name(.), ':') = 'PozycjaUszczegolawiajaca'">
 				<xsl:value-of select="./dtsf:KwotyPozycji/dtsf:KwotaA"/>
 			</xsl:when>
 			<xsl:otherwise>
@@ -171,7 +169,7 @@
     
     <xsl:variable name="kwotab">
 		<xsl:choose>
-			<xsl:when test="substring-before(substring-after(name(.), ':'), '_') = 'PozycjaUszczegolawiajaca'">
+			<xsl:when test="substring-before(substring-after(name(.), ':'), '_') = 'PozycjaUszczegolawiajaca' or substring-after(name(.), ':') = 'Podpozycja' or substring-after(name(.), ':') = 'PozycjaUszczegolawiajaca'">
 				<xsl:value-of select="./dtsf:KwotyPozycji/dtsf:KwotaB"/>
 			</xsl:when>
 			<xsl:otherwise>
@@ -224,43 +222,72 @@
                 <xsl:with-param name="nazwa" select="$nazwa"/>
 			</xsl:call-template>
 		</td>
-		<td class="tekst klu{$klu}">
+		<td class="tekst klu{$level*10}">
 			<xsl:value-of select="$nazwa"/>
 		</td>
 		<td class="kwoty ar {$ujemnaa}">
 			<xsl:call-template name="tkwotowy">
-				<xsl:with-param name="kwota">
-					<xsl:choose>
-						<xsl:when test="substring-before(substring-after(name(.), ':'), '_') = 'PozycjaUszczegolawiajaca'">
-							<xsl:value-of select="./dtsf:KwotyPozycji/dtsf:KwotaA"/>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:value-of select="./dtsf:KwotaA"/>
-						</xsl:otherwise>
-					</xsl:choose>
-				</xsl:with-param>
+				<xsl:with-param name="kwota" select="$kwotaa"/>
 			</xsl:call-template>
 		</td>
 		<td class="kwoty ar {$ujemnab}">
 			<xsl:call-template name="tkwotowy">
-				<xsl:with-param name="kwota">
-					<xsl:choose>
-						<xsl:when test="substring-before(substring-after(name(.), ':'), '_') = 'PozycjaUszczegolawiajaca'">
-							<xsl:value-of select="./dtsf:KwotyPozycji/dtsf:KwotaB"/>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:value-of select="./dtsf:KwotaB"/>
-						</xsl:otherwise>
-					</xsl:choose>
-				</xsl:with-param>
+				<xsl:with-param name="kwota" select="$kwotab"/>
 			</xsl:call-template>
 		</td>
 	</tr>
 	
-	<xsl:apply-templates select="$podpoz">
-		<xsl:with-param name="raport" select="$raport"/>
-	</xsl:apply-templates>
+	<xsl:choose>
+		<xsl:when test="$podpoz">
+			<xsl:apply-templates select="$podpoz">
+				<xsl:with-param name="raport" select="$raport"/>
+				<xsl:with-param name="level" select="$level+1"/>				
+			</xsl:apply-templates>
+		</xsl:when>
 	
+		<xsl:when test="dtsf:PozycjaUszczegolawiajaca">
+			<xsl:apply-templates select="dtsf:PozycjaUszczegolawiajaca">
+				<xsl:with-param name="raport" select="$raport"/>
+				<xsl:with-param name="nazwy" select="$nazwy"/>
+				<xsl:with-param name="level" select="$level+1"/>	
+			</xsl:apply-templates>
+		</xsl:when>
+		
+		<xsl:otherwise>
+			<xsl:apply-templates select="dtsf:Podpozycja">
+				<xsl:with-param name="raport" select="$raport"/>
+				<xsl:with-param name="nazwy" select="$nazwy"/>
+				<xsl:with-param name="level" select="$level+1"/>	
+			</xsl:apply-templates>
+		</xsl:otherwise>
+	</xsl:choose>
+		
+</xsl:template>
+
+<xsl:template match="dtsf:Podpozycja">
+	<xsl:param name="raport"/>
+	<xsl:param name="nazwy"/>
+	<xsl:param name="level"/>
+	
+	<xsl:call-template name="pozycje">
+		<xsl:with-param name="raport" select="$raport"/>
+		<xsl:with-param name="nazwy" select="$nazwy"/>
+		<xsl:with-param name="podpoz" select="./dtsf:Podpozycja"/>
+		<xsl:with-param name="level" select="$level"/>	
+	</xsl:call-template>
+</xsl:template>
+
+<xsl:template match="dtsf:PozycjaUszczegolawiajaca">
+	<xsl:param name="raport"/>
+	<xsl:param name="nazwy"/>
+	<xsl:param name="level"/>
+	
+	<xsl:call-template name="pozycje">
+		<xsl:with-param name="raport" select="$raport"/>
+		<xsl:with-param name="nazwy" select="$nazwy"/>
+		<xsl:with-param name="podpoz" select="./dtsf:Podpozycja"/>
+		<xsl:with-param name="level" select="$level"/>	
+	</xsl:call-template>
 </xsl:template>
 
 <xsl:template name="rzis">
@@ -285,6 +312,7 @@
 		<tbody>
 			<xsl:apply-templates select="$wiersze">
 				<xsl:with-param name="raport" select="$raport"/>
+				<xsl:with-param name="level" select="1"/>
 			</xsl:apply-templates>
 		</tbody>
 	</table>	
@@ -347,33 +375,36 @@
 	<xsd:simpleType name="Aktywa">
 		<xsd:enumeration value="0">UB</xsd:enumeration>
 		<xsd:enumeration value="1">UBS</xsd:enumeration>
-		<xsd:enumeration value="2">B</xsd:enumeration>						
+		<xsd:enumeration value="2">B</xsd:enumeration>
 	</xsd:simpleType>
 	<xsd:simpleType name="Pasywa">
 		<xsd:enumeration value="0">UB</xsd:enumeration>
 		<xsd:enumeration value="1">UBS</xsd:enumeration>
-		<xsd:enumeration value="2">B</xsd:enumeration>						
+		<xsd:enumeration value="2">B</xsd:enumeration>
 	</xsd:simpleType>
 	<xsd:simpleType name="RZiSKalk">
-		<xsd:enumeration value="0">UBS</xsd:enumeration>
+		<xsd:enumeration value="1">UBS</xsd:enumeration>
 	</xsd:simpleType>
 	<xsd:simpleType name="RZiSPor">
-		<xsd:enumeration value="0">UBS</xsd:enumeration>
+		<xsd:enumeration value="1">UBS</xsd:enumeration>
 	</xsd:simpleType>
 	<xsd:simpleType name="RZiSJednostkaOp">
-		<xsd:enumeration value="0">UBS</xsd:enumeration>
+		<xsd:enumeration value="1">UBS</xsd:enumeration>
+	</xsd:simpleType>
+	<xsd:simpleType name="RZiSJednostkaMikro">
+		<xsd:enumeration value="1">UBS</xsd:enumeration>
 	</xsd:simpleType>
 	<xsd:simpleType name="ZestZmianWKapitaleJednostkaInna">
-		<xsd:enumeration value="0">UBS</xsd:enumeration>
-		<xsd:enumeration value="1">B</xsd:enumeration>
+		<xsd:enumeration value="1">UBS</xsd:enumeration>
+		<xsd:enumeration value="2">B</xsd:enumeration>
 	</xsd:simpleType>
 	<xsd:simpleType name="PrzeplywyBezp">
-		<xsd:enumeration value="0">UBS</xsd:enumeration>
-		<xsd:enumeration value="1">B</xsd:enumeration>
+		<xsd:enumeration value="1">UBS</xsd:enumeration>
+		<xsd:enumeration value="2">B</xsd:enumeration>
 	</xsd:simpleType>
 	<xsd:simpleType name="PrzeplywyPosr">
-		<xsd:enumeration value="0">UBS</xsd:enumeration>
-		<xsd:enumeration value="1">U</xsd:enumeration>
+		<xsd:enumeration value="1">UBS</xsd:enumeration>
+		<xsd:enumeration value="2">U</xsd:enumeration>
 	</xsd:simpleType>
 </xsl:variable>
 

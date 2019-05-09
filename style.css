@@ -324,7 +324,10 @@ table.raport td.tekst.klu50 {
     padding-left: 60px;
 }
 table.raport td.tekst.klu60 {
-    padding-left: 90px;
+    padding-left: 70px;
+}
+table.raport td.tekst.klu70 {
+    padding-left: 80px;
 }
 
 table.raport.bilans td.tekst.klu0 {
@@ -334,19 +337,22 @@ table.raport.bilans td.tekst.klu10 {
     padding-left: 2px;
 }
 table.raport.bilans td.tekst.klu20 {
-    padding-left: 6px;
+    padding-left: 7px;
 }
 table.raport.bilans td.tekst.klu30 {
-    padding-left: 10px;
+    padding-left: 12px;
 }
 table.raport.bilans td.tekst.klu40 {
-    padding-left: 14px;
+    padding-left: 17px;
 }
 table.raport.bilans td.tekst.klu50 {
-    padding-left: 18px;
+    padding-left: 22px;
 }
 table.raport.bilans td.tekst.klu60 {
-    padding-left: 22px;
+    padding-left: 27px;
+}
+table.raport.bilans td.tekst.klu70 {
+    padding-left: 32px;
 }
 
 .wyrUBS {

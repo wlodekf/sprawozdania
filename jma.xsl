@@ -43,11 +43,13 @@
 
 <xsl:template match="jma:*">
 	<xsl:param name="raport"/>
+	<xsl:param name="level"/>
 	
 	<xsl:call-template name="pozycje">
 		<xsl:with-param name="raport" select="$raport"/>
 		<xsl:with-param name="nazwy" select="$jma-nazwy"/>
 		<xsl:with-param name="podpoz" select="jma:*"/>
+		<xsl:with-param name="level" select="$level"/>
 	</xsl:call-template>
 </xsl:template>
 

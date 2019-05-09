@@ -37,11 +37,13 @@
 
 <xsl:template match="jmi:*">
 	<xsl:param name="raport"/>
+	<xsl:param name="level"/>
 	
 	<xsl:call-template name="pozycje">
 		<xsl:with-param name="raport" select="$raport"/>
 		<xsl:with-param name="nazwy" select="$jmi-nazwy"/>
 		<xsl:with-param name="podpoz" select="jmi:*"/>
+		<xsl:with-param name="level" select="$level"/>
 	</xsl:call-template>
 </xsl:template>
 
@@ -77,7 +79,7 @@
 		<xsl:apply-templates select="tns:InformacjaDodatkowaDotyczacaPodatkuDochodowego"/>
 		
 		<xsl:call-template name="dodatkoweInformacjeIObjasnienia">
-			<xsl:with-param name="pozycje" select="tns:DodatkoweInformacjeIObjasnienia"/>
+			<xsl:with-param name="pozycje" select="tns:InformacjeUzupelniajaceDoBilansu"/>
 		</xsl:call-template>
 	</section>	
 </xsl:template>

@@ -71,11 +71,13 @@
 
 <xsl:template match="jin:*">
 	<xsl:param name="raport"/>
+	<xsl:param name="level"/>
 	
 	<xsl:call-template name="pozycje">
 		<xsl:with-param name="raport" select="$raport"/>
 		<xsl:with-param name="nazwy" select="$jin-nazwy"/>
 		<xsl:with-param name="podpoz" select="jin:*"/>
+		<xsl:with-param name="level" select="$level"/>
 	</xsl:call-template>
 </xsl:template>
 
@@ -126,6 +128,7 @@
 		<tbody>
 			<xsl:apply-templates select="jin:*">
 				<xsl:with-param name="raport" select="'ZestZmianWKapitaleJednostkaInna'"/>
+				<xsl:with-param name="level" select="1"/>
 			</xsl:apply-templates>	
 		</tbody>
 	</table>
@@ -167,6 +170,7 @@
 		<tbody>
 			<xsl:apply-templates select="jin:*">
 				<xsl:with-param name="raport" select="$raport"/>
+				<xsl:with-param name="level" select="1"/>
 			</xsl:apply-templates>	
 		</tbody>
 	</table>	

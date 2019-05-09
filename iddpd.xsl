@@ -9,7 +9,7 @@
 	
 	<xsl:variable name="kapitalowe" select="count(.//dtsf:RB/dtsf:KwotaB[text() != '0.00']) + count(.//dtsf:RB/dtsf:KwotaC[text() != '0.00'])"/>
 	<xsl:variable name="podstawa" select=".//dtsf:PodstawaPrawna"/>
-	<xsl:variable name="poprzedni" select="count(.//dtsf:RP/KwotaA[text() != '0.00']) + count(.//dtsf:RP/KwotaB[text() != '0.00']) + count(.//dtsf:RP/KwotaC[text() != '0.00'])"/>
+	<xsl:variable name="poprzedni" select="count(.//dtsf:RP/dtsf:KwotaA[text() != '0.00']) + count(.//dtsf:RP/dtsf:KwotaB[text() != '0.00']) + count(.//dtsf:RP/dtsf:KwotaC[text() != '0.00'])"/>
 	<xsl:variable name="wyr">
 		<xsl:if test="//dtsf:PozycjaUzytkownika">wyrUBS</xsl:if>
 	</xsl:variable>
@@ -146,12 +146,14 @@
 	<xsl:param name="podstawa"/>
 	<xsl:param name="poprzedni"/>
 	<xsl:variable name="kwotaa" select="dtsf:Kwoty/dtsf:RB/dtsf:Kwota/dtsf:KwotaA"/>
+	<xsl:variable name="nie0" select="count(.//dtsf:KwotaA[text() != '0.00']) + count(.//dtsf:KwotaB[text() != '0.00']) + count(.//dtsf:KwotaC[text() != '0.00'])"/>
     <xsl:variable name="ujemnaa">
     	<xsl:call-template name="znak_kwoty">
     		<xsl:with-param name="kwota" select="$kwotaa"/>
     	</xsl:call-template>
     </xsl:variable>
 
+	<xsl:if test="$nie0 &gt; 0">
 	<tr>
 		<td class="tekst klu20">
 			<xsl:value-of select="dtsf:NazwaPozycji"/>
@@ -189,6 +191,7 @@
 		</td>
 		</xsl:if>
 	</tr>
+	</xsl:if>
 </xsl:template>
 
 <xsl:template match="dtsf:Pozostale">

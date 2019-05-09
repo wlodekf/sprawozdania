@@ -8,6 +8,17 @@
 
 <xsl:variable name="jop-nazwy" select="document('JednostkaOpStrukturyDanychSprFin_v1-0.xsd')"/>
 
+<xsl:variable name="op">
+	<xsl:choose>
+		<xsl:when test="count(//jop:Aktywa//dtsf:KwotaA) &lt; 10">
+			<xsl:value-of select="'bardzo'"/>
+		</xsl:when>
+		<xsl:otherwise>
+			<xsl:value-of select="'mikro'"/>
+		</xsl:otherwise>
+	</xsl:choose>
+</xsl:variable>
+
 <xsl:template match="tns:WprowadzenieDoSprawozdaniaFinansowegoJednostkaOp">
 	<section>
 		<div class="tyt">Wprowadzenie do sprawozdania</div>
@@ -28,7 +39,7 @@
 	<xsl:call-template name="aktywa">
 		<xsl:with-param name="wiersze" select="jop:*"/>
 		<xsl:with-param name="nazwy" select="$jop-nazwy"/>
-		<xsl:with-param name="klasa" select="'mala'"/>
+		<xsl:with-param name="klasa" select="$op"/>
 	</xsl:call-template>
 </xsl:template>
 
@@ -36,17 +47,19 @@
 	<xsl:call-template name="pasywa">
 		<xsl:with-param name="wiersze" select="jop:*"/>
 		<xsl:with-param name="nazwy" select="$jop-nazwy"/>
-		<xsl:with-param name="klasa" select="'mala'"/>
+		<xsl:with-param name="klasa" select="$op"/>
 	</xsl:call-template>
 </xsl:template>
 
 <xsl:template match="jop:*">
 	<xsl:param name="raport"/>
+	<xsl:param name="level"/>
 	
 	<xsl:call-template name="pozycje">
 		<xsl:with-param name="raport" select="$raport"/>
 		<xsl:with-param name="nazwy" select="$jop-nazwy"/>
 		<xsl:with-param name="podpoz" select="jop:*"/>
+		<xsl:with-param name="level" select="$level"/>
 	</xsl:call-template>
 </xsl:template>
 

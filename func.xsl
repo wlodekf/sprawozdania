@@ -47,7 +47,7 @@
      wtedy nazwa elementu brana jest z komenatrza -->
 <xsl:template name="element">
     <xsl:choose>
-		<xsl:when test="substring-before(substring-after(name(.), ':'), '_') = 'PozycjaUszczegolawiajaca'">
+		<xsl:when test="substring-before(substring-after(name(.), ':'), '_') = 'PozycjaUszczegolawiajaca' or substring-after(name(.), ':') = 'Podpozycja' or substring-after(name(.), ':') = 'PozycjaUszczegolawiajaca'">
 			<xsl:value-of select="comment()"/>
 		</xsl:when>
 		<xsl:otherwise>
@@ -63,7 +63,7 @@
 	<xsl:variable name="wyliczenie" select="substring-after(name(.), ':')"/>
 	
 	<xsl:choose>
-		<xsl:when test="substring-before(substring-after(name(.), ':'), '_') = 'PozycjaUszczegolawiajaca'">
+		<xsl:when test="substring-before(substring-after(name(.), ':'), '_') = 'PozycjaUszczegolawiajaca' or substring-after(name(.), ':') = 'Podpozycja' or substring-after(name(.), ':') = 'PozycjaUszczegolawiajaca'">
 			<xsl:value-of select="./dtsf:NazwaPozycji"/>
 		</xsl:when>
 		<xsl:otherwise>
@@ -161,65 +161,14 @@
 	</xsl:choose>
 </xsl:template>
 
-<xsl:template name="klu-pozycji">
-	<xsl:param name="raport"/>
-	<xsl:variable name="wyliczenie">
-		<xsl:call-template name="element"/>
-	</xsl:variable>
-	
-	<xsl:variable name="klu1">
-		<xsl:call-template name="ile-wystapien">
-			<xsl:with-param name="tekst" select="$wyliczenie"/>
-			<xsl:with-param name="ciag" select="'_'"/>
-		</xsl:call-template>
-	</xsl:variable>
-	
-	<xsl:value-of select="$klu1 * 10"/>
-</xsl:template>
-
-<!-- Ustalenie liczby wystąpień podanego ciągu w podanym tekście -->
-<xsl:template name="ile-wystapien">
-	
-	<xsl:param name="tekst"/>
-	<xsl:param name="ciag"/>
-	
-	<xsl:variable name="po" select="substring-after($tekst, $ciag)"/>
-	
-	<xsl:choose>
-		<xsl:when test="string-length($po) > 0">
-			<xsl:variable name="ile">
-				<xsl:call-template name="ile-wystapien">
-					<xsl:with-param name="tekst" select="$po"/>
-					<xsl:with-param name="ciag" select="$ciag"/>
-				</xsl:call-template>
-			</xsl:variable>
-			<xsl:value-of select="$ile + 1"/>
-		</xsl:when>
-		<xsl:otherwise>
-			<xsl:value-of select="0"/>
-		</xsl:otherwise>
-	</xsl:choose>
-	
-</xsl:template>
-
 <xsl:template name="wyr-pozycji">
 	<!-- Ustalenie klasy CSS wyróżnienia wiersza raportu -->
-	
 	<xsl:param name="raport"/>
-	<xsl:variable name="wyliczenie">
-		<xsl:call-template name="element"/>
-	</xsl:variable>
-
-	<xsl:variable name="poziom">
-		<xsl:call-template name="ile-wystapien">
-			<xsl:with-param name="tekst" select="$wyliczenie"/>
-			<xsl:with-param name="ciag" select="'_'"/>
-		</xsl:call-template>
-	</xsl:variable>
-	<xsl:variable name="wyr" select="exsl:node-set($wyroznienia)/xsd:simpleType[@name=$raport]/xsd:enumeration[@value=$poziom]"/>
+	<xsl:param name="level"/>
+	
+	<xsl:variable name="wyr" select="exsl:node-set($wyroznienia)/xsd:simpleType[@name=$raport]/xsd:enumeration[@value=$level]"/>
 	
 	<xsl:value-of select="concat('wyr', $wyr)"/>
-		
 </xsl:template>
 	
 <xsl:template name="replace-str">
