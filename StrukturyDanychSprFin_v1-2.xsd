@@ -1,0 +1,1014 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:etd="http://crd.gov.pl/xml/schematy/dziedzinowe/mf/2016/01/25/eD/DefinicjeTypy/" xmlns:kpkd="http://crd.gov.pl/xml/schematy/dziedzinowe/mf/2018/02/01/eD/KodyPKD/" xmlns:dtsf="http://www.mf.gov.pl/schematy/SF/DefinicjeTypySprawozdaniaFinansowe/2018/07/09/DefinicjeTypySprawozdaniaFinansowe/" targetNamespace="http://www.mf.gov.pl/schematy/SF/DefinicjeTypySprawozdaniaFinansowe/2018/07/09/DefinicjeTypySprawozdaniaFinansowe/" elementFormDefault="qualified" attributeFormDefault="unqualified" xml:lang="pl">
+	<xsd:import namespace="http://crd.gov.pl/xml/schematy/dziedzinowe/mf/2016/01/25/eD/DefinicjeTypy/" schemaLocation="http://crd.gov.pl/xml/schematy/dziedzinowe/mf/2016/01/25/eD/DefinicjeTypy/StrukturyDanych_v4-0E.xsd"/>
+	<xsd:import namespace="http://crd.gov.pl/xml/schematy/dziedzinowe/mf/2018/02/01/eD/KodyPKD/" schemaLocation="http://crd.gov.pl/xml/schematy/dziedzinowe/mf/2018/02/01/eD/KodyPKD/KodyPKD_v2-0E.xsd"/>
+	<xsd:simpleType name="TKwota3">
+		<xsd:annotation>
+			<xsd:documentation>Wartość numeryczna 18 znaków max, w tym 2 znaki po przecinku</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:decimal">
+			<xsd:totalDigits value="18"/>
+			<xsd:fractionDigits value="2"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="TKwotaTys">
+		<xsd:annotation>
+			<xsd:documentation>Wartość kwot w tysiącach.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:integer">
+			<xsd:totalDigits value="13"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="TDataSF">
+		<xsd:annotation>
+			<xsd:documentation>Typ daty dla elektronicznych sprawozdań finansowych</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:date">
+			<xsd:minInclusive value="1995-01-01"/>
+			<xsd:maxInclusive value="2099-12-31"/>
+			<xsd:pattern value="((\d{4})-(\d{2})-(\d{2}))"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="TMiejscowosc2">
+		<xsd:annotation>
+			<xsd:documentation>Typ określający nazwę miejscowości</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:token">
+			<xsd:maxLength value="90"/>
+			<xsd:minLength value="1"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="TUlica2">
+		<xsd:annotation>
+			<xsd:documentation>Nazwa ulicy</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="etd:TZnakowy">
+			<xsd:maxLength value="210"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="TKodPocztowy2">
+		<xsd:annotation>
+			<xsd:documentation>Kod pocztowy</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="etd:TZnakowy">
+			<xsd:maxLength value="15"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="TNrBudynku2">
+		<xsd:annotation>
+			<xsd:documentation>Numer budynku</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="etd:TZnakowy">
+			<xsd:maxLength value="10"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="TNrLokalu2">
+		<xsd:annotation>
+			<xsd:documentation>Numer lokalu</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="etd:TZnakowy">
+			<xsd:maxLength value="10"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="TPoczta2">
+		<xsd:annotation>
+			<xsd:documentation>Typ określający nazwę poczty</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:token">
+			<xsd:maxLength value="50"/>
+			<xsd:minLength value="1"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="TNazwaFirmy">
+		<xsd:annotation>
+			<xsd:documentation>Typ określający nazwę firmy</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="2000"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="TZakresDat">
+		<xsd:annotation>
+			<xsd:documentation>Zakres dat od - do</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="DataOd" type="etd:TData"/>
+			<xsd:element name="DataDo" type="etd:TData"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TZakresDatSF">
+		<xsd:annotation>
+			<xsd:documentation>Zakres dat od - do z uwzględnieniem ograniczeń dla elektronicznych sprawozdań finansowych</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="DataOd" type="dtsf:TDataSF"/>
+			<xsd:element name="DataDo" type="dtsf:TDataSF"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TAdresZOpcZagranicznym">
+		<xsd:annotation>
+			<xsd:documentation>Adres uwzględniających opcjonalnie dodatkowe informacje o adresie zagranicznym organizacji</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="Adres" type="dtsf:TAdresPolski2">
+				<xsd:annotation>
+					<xsd:documentation>Adres</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="AdresPrzedsiebiorcyZagranicznego" type="dtsf:TAdresZagraniczny2" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Siedziba i adres przedsiębiorcy zagranicznego - wypełnia oddział (zakład) przedsiębiorcy zagranicznego</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TZakresDatOpcjonalnych">
+		<xsd:annotation>
+			<xsd:documentation>Zakres dat od - do przy czym data do może mieć charakter opisowy</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="DataOd" type="etd:TData"/>
+			<xsd:choice>
+				<xsd:element name="DataDo" type="etd:TData"/>
+				<xsd:element name="DataDoOpis" type="etd:TTekstowy"/>
+			</xsd:choice>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:simpleType name="TNazwaPozycjiUzytkownika">
+		<xsd:annotation>
+			<xsd:documentation>Nazwa pozycji użytkownika - typ określający zasady nazywania pozycji użytkownika</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="2"/>
+			<xsd:maxLength value="250"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="TPozycjaUzytkownika">
+		<xsd:annotation>
+			<xsd:documentation>Typ pozwalający na rozszerzenie szczegółowości sprawozdania.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="NazwaPozycji" type="dtsf:TNazwaPozycjiUzytkownika">
+				<xsd:annotation>
+					<xsd:documentation>Nazwa pozycji</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Opis" type="etd:TTekstowy" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:simpleType name="TNazwaPliku">
+		<xsd:annotation>
+			<xsd:documentation>Nazwa pliku wraz z rozszerzeniem</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[a-zA-Z0-9_\.\-]{5,55}"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="TZalacznik">
+		<xsd:annotation>
+			<xsd:documentation>Reprezentacja pliku załączanego do dokumentu</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="Nazwa" type="dtsf:TNazwaPliku">
+				<xsd:annotation>
+					<xsd:documentation>Nazwa pliku wraz z rozszerzeniem.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Zawartosc" type="xsd:base64Binary">
+				<xsd:annotation>
+					<xsd:documentation>Zawartość binarna pliku kodowana w standardzie Base64</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TInformacjaDodatkowa">
+		<xsd:annotation>
+			<xsd:documentation>Typ wykorzystywany do załączania elementów informacji dodatkowej.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="Opis" type="etd:TTekstowy">
+				<xsd:annotation>
+					<xsd:documentation>Opis</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Plik" type="dtsf:TZalacznik" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Załączony plik</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TKwotyPozycji">
+		<xsd:annotation>
+			<xsd:documentation>Kwoty: 
+- na dzień kończący bieżący rok obrotowy,
+- na dzień kończący poprzedni rok obrotowy, 
+- Przekształcone dane porównawcze za poprzedni rok obrotowy</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="KwotaA" type="dtsf:TKwota3">
+				<xsd:annotation>
+					<xsd:documentation>Kwota na dzień kończący bieżący rok obrotowy</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="KwotaB" type="dtsf:TKwota3">
+				<xsd:annotation>
+					<xsd:documentation>Kwota na dzień kończący poprzedni rok obrotowy</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="KwotaB1" type="dtsf:TKwota3" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Przekształcone dane porównawcze za poprzedni rok obrotowy</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TKwotyPozycjiTys">
+		<xsd:annotation>
+			<xsd:documentation>Kwoty w tysiącach: 
+- na dzień kończący bieżący rok obrotowy,
+- na dzień kończący poprzedni rok obrotowy, 
+- Przekształcone dane porównawcze za poprzedni rok obrotowy</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="KwotaA" type="dtsf:TKwotaTys">
+				<xsd:annotation>
+					<xsd:documentation>Kwota na dzień kończący bieżący rok obrotowy</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="KwotaB" type="dtsf:TKwotaTys">
+				<xsd:annotation>
+					<xsd:documentation>Kwota na dzień kończący poprzedni rok obrotowy</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="KwotaB1" type="dtsf:TKwotaTys" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Przekształcone dane porównawcze za poprzedni rok obrotowy</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TWspolczynnikiPozycji">
+		<xsd:annotation>
+			<xsd:documentation>Wpółczynnik: 
+- na dzień kończący bieżący rok obrotowy,
+- na dzień kończący poprzedni rok obrotowy, 
+- Przekształcone dane porównawcze za poprzedni rok obrotowy</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="WspolczynnikA" type="etd:TProcentowy">
+				<xsd:annotation>
+					<xsd:documentation>Współczynnik na dzień kończący bieżący rok obrotowy</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="WspolczynnikB" type="etd:TProcentowy">
+				<xsd:annotation>
+					<xsd:documentation>Współczynnik na dzień kończący poprzedni rok obrotowy</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="WspolczynnikB1" type="etd:TProcentowy" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Przekształcone dane porównawcze za poprzedni rok obrotowy</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TKwotyPozycjiSprawozdania">
+		<xsd:annotation>
+			<xsd:documentation>Typ pozwalający na rozszerzenie szczegółowości sprawozdania.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="NazwaPozycji" type="dtsf:TNazwaPozycjiUzytkownika">
+				<xsd:annotation>
+					<xsd:documentation>Nazwa pozycji sprawozdania</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="KwotyPozycji" type="dtsf:TKwotyPozycji">
+				<xsd:annotation>
+					<xsd:documentation>Kwoty pozycji sprawozdania</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Podpozycja" type="dtsf:TKwotyPozycjiSprawozdania" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TKwotyPozycjiSprawozdaniaTys">
+		<xsd:annotation>
+			<xsd:documentation>Typ pozwalający na rozszerzenie szczegółowości sprawozdania.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="NazwaPozycji" type="dtsf:TNazwaPozycjiUzytkownika">
+				<xsd:annotation>
+					<xsd:documentation>Nazwa pozycji sprawozdania</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="KwotyPozycji" type="dtsf:TKwotyPozycjiTys">
+				<xsd:annotation>
+					<xsd:documentation>Kwoty pozycji sprawozdania</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Podpozycja" type="dtsf:TKwotyPozycjiSprawozdaniaTys" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TPozycjaSprawozdania">
+		<xsd:annotation>
+			<xsd:documentation>Pozycja sprawozdania w złotówkach umożliwiająca rozszerzenie o dodatkowe pozycje (tzw. pozycje użytkownika)</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="dtsf:TKwotyPozycji">
+				<xsd:sequence minOccurs="0">
+					<xsd:element name="PozycjaUszczegolawiajaca" type="dtsf:TKwotyPozycjiSprawozdania" minOccurs="0" maxOccurs="unbounded">
+						<xsd:annotation>
+							<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="TPozycjaSprawozdaniaTys">
+		<xsd:annotation>
+			<xsd:documentation>Pozycja sprawozdania w tysiącach złotych umożliwiająca rozszerzenie o dodatkowe pozycje (tzw. pozycje użytkownika)</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="dtsf:TKwotyPozycjiTys">
+				<xsd:sequence minOccurs="0">
+					<xsd:element name="PozycjaUszczegolawiajaca" type="dtsf:TKwotyPozycjiSprawozdaniaTys" minOccurs="0" maxOccurs="unbounded">
+						<xsd:annotation>
+							<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="TSiedziba">
+		<xsd:annotation>
+			<xsd:documentation>Siedziba podmiotu</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="Wojewodztwo" type="etd:TJednAdmin">
+				<xsd:annotation>
+					<xsd:documentation>Województwo</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Powiat" type="etd:TJednAdmin">
+				<xsd:annotation>
+					<xsd:documentation>Powiat</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Gmina" type="etd:TJednAdmin">
+				<xsd:annotation>
+					<xsd:documentation>Gmina</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Miejscowosc" type="dtsf:TMiejscowosc2">
+				<xsd:annotation>
+					<xsd:documentation>Miejscowość</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TNazwaSiedziba">
+		<xsd:annotation>
+			<xsd:documentation>Nazwa firmy, wraz z adresem siedziby</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="NazwaFirmy" type="dtsf:TNazwaFirmy"/>
+			<xsd:element name="Siedziba" type="dtsf:TSiedziba"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="PKDPodstawowaDzialalnosc">
+		<xsd:annotation>
+			<xsd:documentation>Kody PKD określające podstawową działalność podmiotu</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="KodPKD" type="kpkd:PodklasyPKD_Type" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TNaglowekSprawozdaniaFinansowego">
+		<xsd:annotation>
+			<xsd:documentation>Nagłówek sprawozdania finansowego</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="OkresOd" type="dtsf:TDataSF">
+				<xsd:annotation>
+					<xsd:documentation>Data początkowa okresu, za który sporządzono sprawozdanie</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="OkresDo" type="dtsf:TDataSF">
+				<xsd:annotation>
+					<xsd:documentation>Data końcowa okresu, za który sporządzono sprawozdanie</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="DataSporzadzenia" type="dtsf:TDataSF">
+				<xsd:annotation>
+					<xsd:documentation>Data sporządzenia sprawozdania finansowego</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:simpleType name="TElementPodstawyPrawnej">
+		<xsd:annotation>
+			<xsd:documentation>Pole do określenia podstawy prawnej</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="5"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="TPodstawaPrawna">
+		<xsd:annotation>
+			<xsd:documentation>Podstawa prawna</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="Art" type="dtsf:TElementPodstawyPrawnej">
+				<xsd:annotation>
+					<xsd:documentation>Artykuł</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Ust" type="dtsf:TElementPodstawyPrawnej" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Ustęp</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Pkt" type="dtsf:TElementPodstawyPrawnej" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Punkt</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Lit" type="dtsf:TElementPodstawyPrawnej" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Litera</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TKwotaInformacjiDodatkowej">
+		<xsd:annotation>
+			<xsd:documentation>Struktura z kwotami na potrzeby Informacji dodatkowej o rozliczeniu różnicy pomiędzy podstawą opodatkowania podatkiem dochodowym a wynikiem finansowym</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="KwotaA" type="dtsf:TKwota3">
+				<xsd:annotation>
+					<xsd:documentation>Wartość łączna</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="KwotaB" type="dtsf:TKwota3" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>z zysków kapitałowych</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="KwotaC" type="dtsf:TKwota3" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>z innych źródeł przychodów</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TKwotaInformacjiDodatkowejZPodstawaPrawna">
+		<xsd:annotation>
+			<xsd:documentation>Struktura z kwotami na potrzeby Informacji dodatkowej o rozliczeniu różnicy pomiędzy podstawą opodatkowania podatkiem dochodowym a wynikiem finansowym uwzględniająca podstawę prawną</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="Kwota" type="dtsf:TKwotaInformacjiDodatkowej">
+				<xsd:annotation>
+					<xsd:documentation>Kwoty na potrzeby Informacji dodatkowej o rozliczeniu różnicy pomiędzy podstawą opodatkowania podatkiem dochodowym a wynikiem finansowym</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="PodstawaPrawna" type="dtsf:TPodstawaPrawna">
+				<xsd:annotation>
+					<xsd:documentation>Podstawa prawna (obowiązkowo podawana dla wartości większych bądź równych 20.000,00 zł)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TKwotaOkresInformacjiDodatkowej">
+		<xsd:annotation>
+			<xsd:documentation>Struktura z kwotami z roku poprzedniego i bieżącego dla Informacji dodatkowej o rozliczeniu różnicy pomiędzy podstawą opodatkowania podatkiem dochodowym a wynikiem finansowym</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="RB" type="dtsf:TKwotaInformacjiDodatkowej">
+				<xsd:annotation>
+					<xsd:documentation>Rok bieżący</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="RP" type="dtsf:TKwotaInformacjiDodatkowej" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Rok poprzedni</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TKwotaOkresInformacjiDodatkowejZPodstawaPrawna">
+		<xsd:annotation>
+			<xsd:documentation>Struktura z kwotami z roku poprzedniego i bieżącego dla Informacji dodatkowej o rozliczeniu różnicy pomiędzy podstawą opodatkowania podatkiem dochodowym a wynikiem finansowym uwzględniająca podstawę prawną</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="RB" type="dtsf:TKwotaInformacjiDodatkowejZPodstawaPrawna">
+				<xsd:annotation>
+					<xsd:documentation>Rok bieżący</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="RP" type="dtsf:TKwotaInformacjiDodatkowej" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Rok poprzedni</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TKwotaOkres">
+		<xsd:annotation>
+			<xsd:documentation>Kwoty dla roku bieżącego i poprzedniego</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="RB" type="dtsf:TKwota3">
+				<xsd:annotation>
+					<xsd:documentation>Rok bieżący</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="RP" type="dtsf:TKwota3" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Rok poprzedni</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TKwotaOkresUzytkownikaInformacjiDodatkowej">
+		<xsd:annotation>
+			<xsd:documentation>Kwoty dla dodatkowych pozycji uwzględniające rok bieżący i poprzedni</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="NazwaPozycji" type="etd:TTekstowy"/>
+			<xsd:element name="Kwoty" type="dtsf:TKwotaOkresInformacjiDodatkowej"/>
+			<xsd:element name="Podpozycja" type="dtsf:TKwotaOkresUzytkownikaInformacjiDodatkowej" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TPozycjaUzytkownikaInformacjiDodatkowej">
+		<xsd:annotation>
+			<xsd:documentation>Kwoty dla dodatkowych pozycji uwzględniające rok bieżący i poprzedni, wraz z podstawą prawną</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="NazwaPozycji" type="etd:TTekstowy"/>
+			<xsd:element name="Kwoty" type="dtsf:TKwotaOkresInformacjiDodatkowejZPodstawaPrawna"/>
+			<xsd:element name="Podpozycja" type="dtsf:TPozycjaUzytkownikaInformacjiDodatkowej" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TPozycjaInformacjiDodatkowej2">
+		<xsd:annotation>
+			<xsd:documentation>Pozycja w Informacji dodatkowej o rozliczeniu różnicy pomiędzy podstawą opodatkowania podatkiem dochodowym a wynikiem finansowym</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="Kwota" type="dtsf:TKwotaOkresInformacjiDodatkowej">
+				<xsd:annotation>
+					<xsd:documentation>w przypadku wypełnienia pozycje sumujące się do powyższej</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="PozycjaUzytkownika" type="dtsf:TKwotaOkresUzytkownikaInformacjiDodatkowej" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TPozycjaInformacjiDodatkowej">
+		<xsd:annotation>
+			<xsd:documentation>Pozycja w Informacji dodatkowej o rozliczeniu różnicy pomiędzy podstawą opodatkowania podatkiem dochodowym a wynikiem finansowym</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="Kwota" type="dtsf:TKwotaOkresInformacjiDodatkowej">
+				<xsd:annotation>
+					<xsd:documentation>w przypadku wypełnienia pozycje sumujące się do powyższej</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="PozycjaUzytkownika" type="dtsf:TPozycjaUzytkownikaInformacjiDodatkowej" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Pozostale" type="dtsf:TKwotaOkresInformacjiDodatkowej" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Pozostałe (możliwość łącznego podania różnic o wartościach niższych niż 20.000 zł)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TInformacjaDodatkowaDotyczacaPodatkuDochodowego">
+		<xsd:annotation>
+			<xsd:documentation>Rozliczenie różnicy pomiędzy podstawą opodatkowania podatkiem dochodowym a wynikiem finansowym (zyskiem, stratą) brutto</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="P_ID_1" type="dtsf:TKwotaOkres">
+				<xsd:annotation>
+					<xsd:documentation>A. Zysk (strata) brutto za dany rok</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="P_ID_2" type="dtsf:TPozycjaInformacjiDodatkowej">
+				<xsd:annotation>
+					<xsd:documentation>B. Przychody zwolnione z opodatkowania (trwałe różnice pomiędzy zyskiem/stratą dla celów rachunkowych a dochodem/stratą dla celów podatkowych), w tym:</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="P_ID_3" type="dtsf:TPozycjaInformacjiDodatkowej">
+				<xsd:annotation>
+					<xsd:documentation> C. Przychody niepodlegające opodatkowaniu w roku bieżącym, w tym:</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="P_ID_4" type="dtsf:TPozycjaInformacjiDodatkowej">
+				<xsd:annotation>
+					<xsd:documentation>D. Przychody podlegające opodatkowaniu w roku bieżącym, ujęte w księgach rachunkowych lat ubiegłych w tym:</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="P_ID_5" type="dtsf:TPozycjaInformacjiDodatkowej">
+				<xsd:annotation>
+					<xsd:documentation>E. Koszty niestanowiące kosztów uzyskania przychodów (trwałe różnice pomiędzy zyskiem/stratą dla celów rachunkowych a dochodem/stratą dla celów podatkowych), w tym:</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="P_ID_6" type="dtsf:TPozycjaInformacjiDodatkowej">
+				<xsd:annotation>
+					<xsd:documentation>F. Koszty nieuznawane za koszty uzyskania przychodów w bieżącym roku, w tym:</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="P_ID_7" type="dtsf:TPozycjaInformacjiDodatkowej">
+				<xsd:annotation>
+					<xsd:documentation>G. Koszty uznawane za koszty uzyskania przychodów w roku bieżącym ujęte w księgach lat ubiegłych, w tym:</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="P_ID_8" type="dtsf:TPozycjaInformacjiDodatkowej2">
+				<xsd:annotation>
+					<xsd:documentation>H. Strata z lat ubiegłych, w tym:</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="P_ID_9" type="dtsf:TPozycjaInformacjiDodatkowej">
+				<xsd:annotation>
+					<xsd:documentation>I. Inne zmiany podstawy opodatkowania, w tym:</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="P_ID_10" type="dtsf:TKwotaOkres">
+				<xsd:annotation>
+					<xsd:documentation>J. Podstawa opodatkowania podatkiem dochodowym</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="P_ID_11" type="dtsf:TKwotaOkres">
+				<xsd:annotation>
+					<xsd:documentation>K. Podatek dochodowy</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TKwotaInformacjiDodatkowejTys">
+		<xsd:annotation>
+			<xsd:documentation>Struktura z kwotami na potrzeby Informacji dodatkowej o rozliczeniu różnicy pomiędzy podstawą opodatkowania podatkiem dochodowym a wynikiem finansowym</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="KwotaA" type="dtsf:TKwotaTys">
+				<xsd:annotation>
+					<xsd:documentation>Wartość łączna</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="KwotaB" type="dtsf:TKwotaTys" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>z zysków kapitałowych</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="KwotaC" type="dtsf:TKwotaTys" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>z innych źródeł przychodów</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TKwotaInformacjiDodatkowejZPodstawaPrawnaTys">
+		<xsd:annotation>
+			<xsd:documentation>Struktura z kwotami na potrzeby Informacji dodatkowej o rozliczeniu różnicy pomiędzy podstawą opodatkowania podatkiem dochodowym a wynikiem finansowym uwzględniająca podstawę prawną</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="Kwota" type="dtsf:TKwotaInformacjiDodatkowejTys">
+				<xsd:annotation>
+					<xsd:documentation>Kwoty na potrzeby Informacji dodatkowej o rozliczeniu różnicy pomiędzy podstawą opodatkowania podatkiem dochodowym a wynikiem finansowym</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="PodstawaPrawna" type="dtsf:TPodstawaPrawna">
+				<xsd:annotation>
+					<xsd:documentation>Podstawa prawna (obowiązkowo podawana dla wartości większych bądź równych 20.000,00 zł)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TKwotaOkresInformacjiDodatkowejTys">
+		<xsd:annotation>
+			<xsd:documentation>Struktura z kwotami z roku poprzedniego i bieżącego dla Informacji dodatkowej o rozliczeniu różnicy pomiędzy podstawą opodatkowania podatkiem dochodowym a wynikiem finansowym</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="RB" type="dtsf:TKwotaInformacjiDodatkowejTys">
+				<xsd:annotation>
+					<xsd:documentation>Rok bieżący</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="RP" type="dtsf:TKwotaInformacjiDodatkowejTys" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Rok poprzedni</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TKwotaOkresInformacjiDodatkowejZPodstawaPrawnaTys">
+		<xsd:annotation>
+			<xsd:documentation>Struktura z kwotami z roku poprzedniego i bieżącego dla Informacji dodatkowej o rozliczeniu różnicy pomiędzy podstawą opodatkowania podatkiem dochodowym a wynikiem finansowym uwzględniająca podstawę prawną</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="RB" type="dtsf:TKwotaInformacjiDodatkowejZPodstawaPrawnaTys">
+				<xsd:annotation>
+					<xsd:documentation>Rok bieżący</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="RP" type="dtsf:TKwotaInformacjiDodatkowejTys" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Rok poprzedni</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TKwotaOkresTys">
+		<xsd:annotation>
+			<xsd:documentation>Kwoty dla roku bieżącego i poprzedniego</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="RB" type="dtsf:TKwotaTys">
+				<xsd:annotation>
+					<xsd:documentation>Rok bieżący</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="RP" type="dtsf:TKwotaTys" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Rok poprzedni</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TKwotaOkresUzytkownikaInformacjiDodatkowejTys">
+		<xsd:annotation>
+			<xsd:documentation>Kwoty dla dodatkowych pozycji uwzględniające rok bieżący i poprzedni</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="NazwaPozycji" type="etd:TTekstowy"/>
+			<xsd:element name="Kwoty" type="dtsf:TKwotaOkresInformacjiDodatkowejTys"/>
+			<xsd:element name="Podpozycja" type="dtsf:TKwotaOkresUzytkownikaInformacjiDodatkowejTys" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TPozycjaUzytkownikaInformacjiDodatkowejTys">
+		<xsd:annotation>
+			<xsd:documentation>Kwoty dla dodatkowych pozycji uwzględniające rok bieżący i poprzedni, wraz z podstawą prawną</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="NazwaPozycji" type="etd:TTekstowy"/>
+			<xsd:element name="Kwoty" type="dtsf:TKwotaOkresInformacjiDodatkowejZPodstawaPrawnaTys"/>
+			<xsd:element name="Podpozycja" type="dtsf:TPozycjaUzytkownikaInformacjiDodatkowejTys" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TPozycjaInformacjiDodatkowej2Tys">
+		<xsd:annotation>
+			<xsd:documentation>Pozycja w Informacji dodatkowej o rozliczeniu różnicy pomiędzy podstawą opodatkowania podatkiem dochodowym a wynikiem finansowym</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="Kwota" type="dtsf:TKwotaOkresInformacjiDodatkowejTys">
+				<xsd:annotation>
+					<xsd:documentation>w przypadku wypełnienia pozycje sumujące się do powyższej</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="PozycjaUzytkownika" type="dtsf:TKwotaOkresUzytkownikaInformacjiDodatkowejTys" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TPozycjaInformacjiDodatkowejTys">
+		<xsd:annotation>
+			<xsd:documentation>Pozycja w Informacji dodatkowej o rozliczeniu różnicy pomiędzy podstawą opodatkowania podatkiem dochodowym a wynikiem finansowym</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="Kwota" type="dtsf:TKwotaOkresInformacjiDodatkowejTys">
+				<xsd:annotation>
+					<xsd:documentation>w przypadku wypełnienia pozycje sumujące się do powyższej</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="PozycjaUzytkownika" type="dtsf:TPozycjaUzytkownikaInformacjiDodatkowejTys" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Informacja uszczegóławiająca, wynikająca z potrzeb lub specyfiki jednostki</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Pozostale" type="dtsf:TKwotaOkresInformacjiDodatkowejTys" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Pozostałe (Możliwość łącznego podania różnic o wartościach niższych niż 20.000 zł)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TInformacjaDodatkowaDotyczacaPodatkuDochodowegoTys">
+		<xsd:annotation>
+			<xsd:documentation>Rozliczenie różnicy pomiędzy podstawą opodatkowania podatkiem dochodowym a wynikiem finansowym (zyskiem, stratą) brutto</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="P_ID_1" type="dtsf:TKwotaOkresTys">
+				<xsd:annotation>
+					<xsd:documentation>A. Zysk (strata) brutto za dany rok</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="P_ID_2" type="dtsf:TPozycjaInformacjiDodatkowejTys">
+				<xsd:annotation>
+					<xsd:documentation>B. Przychody zwolnione z opodatkowania (trwałe różnice pomiędzy zyskiem/stratą dla celów rachunkowych a dochodem/stratą dla celów podatkowych), w tym:</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="P_ID_3" type="dtsf:TPozycjaInformacjiDodatkowejTys">
+				<xsd:annotation>
+					<xsd:documentation> C. Przychody niepodlegające opodatkowaniu w roku bieżącym, w tym:</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="P_ID_4" type="dtsf:TPozycjaInformacjiDodatkowejTys">
+				<xsd:annotation>
+					<xsd:documentation>D. Przychody podlegające opodatkowaniu w roku bieżącym, ujęte w księgach rachunkowych lat ubiegłych w tym:</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="P_ID_5" type="dtsf:TPozycjaInformacjiDodatkowejTys">
+				<xsd:annotation>
+					<xsd:documentation>E. Koszty niestanowiące kosztów uzyskania przychodów (trwałe różnice pomiędzy zyskiem/stratą dla celów rachunkowych a dochodem/stratą dla celów podatkowych), w tym:</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="P_ID_6" type="dtsf:TPozycjaInformacjiDodatkowejTys">
+				<xsd:annotation>
+					<xsd:documentation>F. Koszty nieuznawane za koszty uzyskania przychodów w bieżącym roku, w tym:</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="P_ID_7" type="dtsf:TPozycjaInformacjiDodatkowejTys">
+				<xsd:annotation>
+					<xsd:documentation>G. Koszty uznawane za koszty uzyskania przychodów w roku bieżącym ujęte w księgach lat ubiegłych, w tym:</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="P_ID_8" type="dtsf:TPozycjaInformacjiDodatkowej2Tys">
+				<xsd:annotation>
+					<xsd:documentation>H. Strata z lat ubiegłych, w tym:</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="P_ID_9" type="dtsf:TPozycjaInformacjiDodatkowejTys">
+				<xsd:annotation>
+					<xsd:documentation>I. Inne zmiany podstawy opodatkowania, w tym:</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="P_ID_10" type="dtsf:TKwotaOkresTys">
+				<xsd:annotation>
+					<xsd:documentation>J. Podstawa opodatkowania podatkiem dochodowym</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="P_ID_11" type="dtsf:TKwotaOkresTys">
+				<xsd:annotation>
+					<xsd:documentation>K. Podatek dochodowy</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TIdentyfikatorPodmiotu">
+		<xsd:annotation>
+			<xsd:documentation>Identyfikator podmiotu składającego sprawozdanie finansowe. W przypadku sprawozdań finansowych składanych do Szefa KAS wypełnia się identyfikator podatkowy. W sprawozdanych finansowych składanych do KRS wypełnia się numer KRS.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice>
+			<xsd:element name="NIP" type="etd:TNrNIP">
+				<xsd:annotation>
+					<xsd:documentation>Identyfikator podatkowy NIP</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="KRS" type="etd:TNrKRS">
+				<xsd:annotation>
+					<xsd:documentation>Numer KRS</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:choice>
+	</xsd:complexType>
+	<xsd:complexType name="TAdresPolski2">
+		<xsd:annotation>
+			<xsd:documentation>Informacje opisujące adres polski</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="KodKraju" type="etd:TKodKraju" fixed="PL">
+				<xsd:annotation>
+					<xsd:documentation>Kraj</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Wojewodztwo" type="etd:TJednAdmin">
+				<xsd:annotation>
+					<xsd:documentation>Województwo</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Powiat" type="etd:TJednAdmin">
+				<xsd:annotation>
+					<xsd:documentation>Powiat</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Gmina" type="etd:TJednAdmin">
+				<xsd:annotation>
+					<xsd:documentation>Gmina</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Ulica" type="dtsf:TUlica2" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Nazwa ulicy</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="NrDomu" type="dtsf:TNrBudynku2">
+				<xsd:annotation>
+					<xsd:documentation>Numer budynku</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="NrLokalu" type="dtsf:TNrLokalu2" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Numer lokalu</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Miejscowosc" type="dtsf:TMiejscowosc2">
+				<xsd:annotation>
+					<xsd:documentation>Nazwa miejscowości</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="KodPocztowy" type="dtsf:TKodPocztowy2">
+				<xsd:annotation>
+					<xsd:documentation>Kod pocztowy</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Poczta" type="dtsf:TPoczta2">
+				<xsd:annotation>
+					<xsd:documentation>Nazwa urzędu pocztowego</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TAdresZagraniczny2">
+		<xsd:annotation>
+			<xsd:documentation>Informacje opisujące adres zagraniczny</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="KodKraju">
+				<xsd:annotation>
+					<xsd:documentation>Kod Kraju [Country Code]</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="etd:TKodKraju">
+						<xsd:pattern value="P[A-KM-Z]"/>
+						<xsd:pattern value="[A-OQ-Z][A-Z]"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="KodPocztowy" type="dtsf:TKodPocztowy2" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Kod pocztowy [Postal code]</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Miejscowosc" type="dtsf:TMiejscowosc2">
+				<xsd:annotation>
+					<xsd:documentation>Nazwa miejscowości [City]</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Ulica" type="dtsf:TUlica2" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Nazwa ulicy [Street]</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="NrDomu" type="dtsf:TNrBudynku2" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Numer budynku [Building number]</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="NrLokalu" type="dtsf:TNrLokalu2" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Numer lokalu [Flat number]</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>
